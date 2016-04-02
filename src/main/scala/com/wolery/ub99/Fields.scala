@@ -18,7 +18,7 @@ import update.update
 import java.io.Writer
 import java.io.OutputStream
 import java.io.InputStream
-
+import Utils._
 //****************************************************************************
 
 object Fields
@@ -157,40 +157,43 @@ object Fields
   def newName(n: Name,c: Code,d: Name): Field = new FieldOf(n,c,d)
   {
     override
-    def dump(io: Writer)         = io.append(f"\042$m_val%-12s\042")
+    def load(b: Bytes)          = m_val = substring(b,16,12)
+
+    override
+    def dump(w: Writer)         = w.append('"' + f"$m_val%-12s" + '"')
+
+    def copy                    = newName(n,c,d)
   }
 
   def newKnob(n: Name,c: Code,d: Name): Field = new FieldOf(n,c,d)
   {
-    var m_eff: Effect          = null;
+    var m_eff: Effect           = null;
     override
-    def effect(e: Effect)      = {assert(m_eff == null); m_eff = e}
+    def set(e: Effect)          = {assert(m_eff == null); m_eff = e}
+
+    override
+    def load(b: Bytes)          = get(b) match
+    {
+      case c if c==none         ⇒ m_val = "NONE"
+      case code                 ⇒ m_val = m_eff.field(code).name
+    }
+
+    def copy                    = {val f = newKnob(n,c,d); f.set(m_eff); f}
   }
 
-  def newChoice(n: Name,c: Code,d: ℕ,s: String*): Field = new FieldOf(n,c,s(d))
+  def newChoice(n: Name,c: Code,x: ℕ,s: String*): Field = new FieldOf(n,c,s(x))
   {
- // val map: Map[Name,Index]   = s.zipWithIndex.toMap
+    def copy                    = newChoice(n,c,x,s:_*)
   }
 
   def newLinear(n: Name,c: Code,d: ℝ,p: Point*): Field = new FieldOf(n,c,d)
   {
+    def copy                    = newLinear(n,c,d,p:_*)
   }
 
   def newFreqcy (n: Name,c: Code,l: ℝ,h: ℝ,s: ℕ,d: ℝ): Field = new FieldOf(n,c,d)
   {
-  //val phi: ℝ                 = math.log(h/l) / s       // The exponent rate
-  }
-
-  abstract class FieldOf[Value](n: Name,c: Code,val d: Value) extends Field
-  {
-    var m_val   = d
-    def name    = n
-    def code    = c
-    def dirty   = m_val != d
-
-    def load(io: Array[Byte])    = {}
-    def save(io: Array[Byte])    = {}
-    def dump(io: Writer)         = io.append(s"$name:=$m_val")
+    def copy                    = newFreqcy(n,c,l,h,s,d)
   }
 
 //****************************************************************************

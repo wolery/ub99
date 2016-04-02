@@ -17,12 +17,16 @@ package com.wolery.ub99
 import java.io.InputStream
 import java.io.OutputStream
 import java.io.Writer
+import Utils._
 
 //****************************************************************************
 
 final class Library
 {
-  def load(io: InputStream): Unit =
+  /**
+   *
+   */
+  def load(io: InputStream) =
   {
     val b = new Array[Byte](image_size)
     val n = io.read(b)
@@ -37,7 +41,7 @@ final class Library
       throw bad_load_format
     }
 
-    if (new String(b.slice(0,10)).compareTo("UB99 V1.00") != 0)
+    if (substring(b,0,10).compareTo("UB99 V1.00") != 0)
     {
       throw bad_load_format
     }
@@ -47,21 +51,30 @@ final class Library
 
     while (i != library_size)
     {
-      val x = b.slice(o,o+effect_size)
       m_slot(i) = Effect(b.slice(o,o+effect_size))
       o        += effect_size
       i        += 1
     }
   }
 
-  def save(o: OutputStream): Unit  = {}
+  /**
+   *
+   */
+  def read(i: InputStream) = {}
+
+  /**
+   *
+   */
+  def save(o: OutputStream) = {}
 
   /**
    *
    */
   def dump(io: Writer) =
   {
-    io.append("//" + "*" * 76 + "\n\n")
+    val break = "//" + "*" * 76 + '\n'
+
+    io.append(break + '\n')
 
     for (i ← 0 until library_size)
     {
@@ -70,21 +83,14 @@ final class Library
       io.append('\n')
     }
 
+    io.append('\n' + break)
     io.flush()
   }
-
-
-  def read(i: InputStream): Unit   = {}
 
   def get(slot: Slot) : Effect     = ???
   def set(slot: Slot,e: Effect)    = ???
 
-  val m_slot: Array[Effect]       = new Array(library_size)
-
-  {
-    for (slot ← 0 until library_size)
-      m_slot(slot) = Effect("Amp")
-  }
+  val m_slot: Array[Effect]       = Array.fill[Effect](library_size)(Effect())
 
   val image_size  = 0x4400
   val image_magic = "UB99 V1.00"
@@ -93,12 +99,3 @@ final class Library
 }
 
 //****************************************************************************
-/*
-  val name_size         = 12          // ...number of bytes per patch name
-  val library_size      = 99          // ...number of patches per library
-  val image_size        = 0x4400      // ...number of bytes per library file
-  val image_magic       = "UB99 V1.00"
-  val effect_size       = 0x009F      // ...number of bytes per patch block
-  val header_size       = 0x0600      // ...number of bytes per file header
-
-*/

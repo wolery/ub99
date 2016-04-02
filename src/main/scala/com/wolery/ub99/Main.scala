@@ -30,14 +30,14 @@ object Main
     {
       val c: CommandLine = parse(args);
 
-      if (c.hasOption('h'))
-      {
-        doHelp
-      }
-      else
       if (c.hasOption('v'))
       {
-        doVersion
+        doVersion()
+      }
+
+      if (c.hasOption('h'))
+      {
+        doHelp()
       }
       else
       if (c.hasOption('q'))
@@ -46,35 +46,16 @@ object Main
       }
       else
       {
-        val l: Library = new Library();
+        val l = new Library();
 
-        if (c.hasOption('l'))
-        {
-          l.load(new FileInputStream(c.getOptionValue('l')))
-        }
-
-        if (c.hasOption('r'))
-        {
-          l.read(new FileInputStream(c.getOptionValue('r')))
-        }
-
-        if (c.hasOption('d'))
-        {
-          l.dump(new PrintWriter(c.getOptionValue('d')))
-        }
-
-        if (c.hasOption('s'))
-        {
-          l.save(new FileOutputStream(c.getOptionValue('s')))
-        }
+        onPath(c,'l',p ⇒ l.load(new FileInputStream (p)))
+        onPath(c,'r',p ⇒ l.read(new FileInputStream (p)))
+        onPath(c,'d',p ⇒ l.dump(new PrintWriter     (p)))
+        onPath(c,'s',p ⇒ l.save(new FileOutputStream(p)))
       }
     }
     catch
     {
-      case e: Error ⇒
-      {
-        println(e("A","B","C","D"))
-      }
       case e: Exception ⇒
       {
         println(e)
@@ -85,8 +66,9 @@ object Main
 
   def doHelp() =
   {
-    println("usage: ub99")
+    println("usage: ub99 [options]")
     println("")
+    println("options:")
     println(" -l,--load <path>              patch library to load")
     println(" -r,--read <path>              patch text file to read")
     println(" -d,--dump <path>              patch text file to dump")
@@ -101,7 +83,24 @@ object Main
     println("MagicStomp Patch Editing Utility v1.0.0.")
     println("Copyright © Jonathon Bell. All rights reserved.")
     println("")
-    println("Creates and parses MagicStomp (.ub9) patch library files.")
+    println("Creates and parses MagicStomp UB99 patch library files.")
+  }
+
+  def onPath(c: CommandLine,o: Char,act: String⇒Unit) =
+  {
+    if (c.hasOption(o))
+    {
+      val p = c.getOptionValue(o)
+
+      try
+      {
+        act(p)
+      }
+      catch
+      {
+        case e: Error ⇒ e.patchAndRethrow(p)
+      }
+    }
   }
 
   def doQuery(query: String) =
@@ -122,57 +121,15 @@ object Main
 
   def parse(args: Array[String]): CommandLine =
   {
-    new DefaultParser().parse(options,args);
-  }
-
-  def options(): Options =
-  {
-    new Options()
-      .addOption(
-          Option.builder     ("l")
-                .longOpt     ("load")
-                .desc        ("patch library to load")
-                .argName     ("path")
-                .numberOfArgs(1)
-                .build())
-      .addOption(
-          Option.builder     ("r")
-                .longOpt     ("read")
-                .desc        ("patch text file to read")
-                .argName     ("path")
-                .numberOfArgs(1)
-                .build())
-      .addOption(
-          Option.builder     ("d")
-                .longOpt     ("dump")
-                .desc        ("patch text file to dump")
-                .argName     ("path")
-                .numberOfArgs(1)
-                .build())
-      .addOption(
-          Option.builder     ("s")
-                .longOpt     ("save")
-                .desc        ("patch library to save")
-                .argName     ("path")
-                .numberOfArgs(1)
-                .build())
-      .addOption(
-          Option.builder     ("q")
-                .longOpt     ("query")
-                .desc        ("list effect types or field names")
-                .argName     ("[effect.field]")
-                .numberOfArgs(1)
-                .build())
-      .addOption(
-          Option.builder     ("h")
-                .longOpt     ("help")
-                .desc        ("prints this help message")
-                .build())
-      .addOption(
-          Option.builder     ("v")
-                .longOpt     ("version")
-                .desc        ("prints version information")
-                .build())
+    new DefaultParser().parse(new Options()
+    .addOption(new Option("l","load",   true, "patch library to load"))
+    .addOption(new Option("r","read",   true, "patch text file to read"))
+    .addOption(new Option("d","dump",   true, "patch text file to dump"))
+    .addOption(new Option("s","save",   true, "patch library to save"))
+    .addOption(new Option("q","query",  true, "list effect types or field names"))
+    .addOption(new Option("h","help",   false,"prints this help message"))
+    .addOption(new Option("v","version",false,"prints version information"))
+    ,args);
   }
 }
 

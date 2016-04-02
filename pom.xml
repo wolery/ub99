@@ -12,7 +12,7 @@
   <packaging>jar</packaging>
 
   <name>UB99</name>
-  <description>MagicStomp patch editor utility</description>
+  <description>MagicStomp UB99 patch editor utility</description>
   <url>https://github.com/wolery/ub99</url>
   <inceptionYear>March 2016</inceptionYear>
   <organization>

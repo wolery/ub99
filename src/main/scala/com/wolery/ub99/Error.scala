@@ -16,17 +16,12 @@ package com.wolery.ub99
 
 //****************************************************************************
 
-class Error (val format: String) extends Exception
+class Error (message: String) extends Exception(message)
 {
-  def apply(args: String*): String = ???
-  def apply(args: Map[String,String]): String = ???
-}
-
-//****************************************************************************
-
-object Error
-{
-  def apply(format: String) = new Error(format)
+  def patchAndRethrow(path: String) =
+  {
+    throw new Exception(message.replaceAll("PATH",path))
+  }
 }
 
 //****************************************************************************

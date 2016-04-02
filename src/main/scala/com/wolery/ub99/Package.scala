@@ -52,45 +52,45 @@ package object ub99
     type update           = Value
   }
 
-  def help_request        = Error("\nTry %0.")
-  def bad_load_path       = Error("cannot open patch library '%l'.")
-  def bad_load_format     = Error("cannot load '%l'; this file is not a patch library.")
-  def bad_edit_path       = Error("cannot open patch edit text file '%e'.")
-  def bad_dump_path       = Error("cannot dump patch edit text file to '%d'.")
-  def bad_save_path       = Error("cannot save patch library to '%s'.")
+  def help_request        = new Error("\nTry %0.")
+  def bad_load_path       = new Error("cannot open patch library 'PATH'.")
+  def bad_load_format     = new Error("cannot load 'PATH'; the file is not a patch library.")
+  def bad_edit_path       = new Error("cannot open patch text file 'PATH'.")
+  def bad_dump_path       = new Error("cannot dump patch text file to 'PATH'.")
+  def bad_save_path       = new Error("cannot save patch library to 'PATH'.")
 
   def bad_syntax(line: ℕ,text: String): Error =
   {
-    Error(s"%e(${line}) : '#{text}' syntax error.")
+    new Error(s"PATH($line) : '$text' syntax error.")
   }
 
   def bad_end_of_file(line: ℕ): Error =
   {
-    Error(s"%e(%h) : there is a syntax error at the end of the file.")
+    new Error(s"PATH($line) : there is a syntax error at the end of the file.")
   }
 
   def bad_source_byte(line: ℕ,byte: Byte): Error =
   {
-    Error(s"%e(%h) : the file contains an illegal character '${byte.toChar}' (${byte}).")
+    new Error(s"PATH($line) : the file contains an illegal character '${byte.toChar}' (${byte}).")
   }
 
   def bad_token_length(line: ℕ,text: String): Error =
   {
-    Error(s"%e(%h) : the string beginning '${text}...' is too long.")
+    new Error(s"PATH($line) : the string beginning '$text...' is too long.")
   }
 
   def bad_block_comment(line: ℕ): Error =
   {
-    Error("%e(%h) : the '/*' comment is not terminated with a matching '*/'.")
+    new Error("%PATH($line) : the '/*' comment is not terminated with a matching '*/'.")
   }
 
-  def bad_quoted_string(line: ℕ) = Error("%e(%h) : the string beginning '%1...' is missing a closing '\"'.")
-  def bad_explicit_slot(line: ℕ) = Error("%e(%h) : '%0' is not a library slot; try a whole number between 1 and 99.")
-  def bad_implicit_slot(line: ℕ) = Error("%e(%h) : the library is full; try storing '%0' in another library slot.")
-  def bad_effect_type(line: ℕ)   = Error("%e(%h) : '%0' is not an effect; try %2.")
-  def bad_field_name(line: ℕ)    = Error("%e(%h) : '%0' is not a field of %2; try %3.")
-  def bad_field_value(line: ℕ)   = Error("%e(%h) : '%1' is not a legal value for %3.%0; try %2.")
-  def bad_field_update(line: ℕ)  = Error("%e(%h) : the field '%0' can only be updated using the ':=' operator.")
+  def bad_quoted_string(line: ℕ) = new Error("PATH($line) : the string beginning '%1...' is missing a closing '\"'.")
+  def bad_explicit_slot(line: ℕ) = new Error("PATH($line) : '%0' is not a library slot; try a whole number between 1 and 99.")
+  def bad_implicit_slot(line: ℕ) = new Error("PATH($line) : the library is full; try storing '%0' in another library slot.")
+  def bad_effect_type(line: ℕ)   = new Error("PATH($line) : '%0' is not an effect; try %2.")
+  def bad_field_name(line: ℕ)    = new Error("PATH($line) : '%0' is not a field of %2; try %3.")
+  def bad_field_value(line: ℕ)   = new Error("PATH($line) : '%1' is not a legal value for %3.%0; try %2.")
+  def bad_field_update(line: ℕ)  = new Error("PATH($line) : the field '%0' can only be updated using the ':=' operator.")
 }
 
 //****************************************************************************

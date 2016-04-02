@@ -28,6 +28,12 @@ def round(real: ℝ): Int = (real + 0.5).toInt
  */
 //def almostEqual(r1: ℝ,r2: ℝ): Bool = Double.abs(r2 - r1) < 0.00001;
 
+
+def substring(bytes: Bytes,o:Int,n:Int): String =
+{
+  (new String(bytes.slice(o,o+n))).intern
+}
+
 }
 
 //****************************************************************************

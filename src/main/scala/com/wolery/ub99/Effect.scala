@@ -34,14 +34,6 @@ class Effect (val kind: Kind,val name: Name,val fields: Seq[Field])
   /**
    *
    */
-  def load(io: InputStream) =
-  {
-
-  }
-
-  /**
-   *
-   */
   def save(io: OutputStream) =
   {
 
@@ -58,7 +50,7 @@ class Effect (val kind: Kind,val name: Name,val fields: Seq[Field])
 
     for (f ← fields)
     {
-     // if (f.dirty)
+      if (f.dirty)
       {
         if (first)
         {
@@ -76,13 +68,10 @@ class Effect (val kind: Kind,val name: Name,val fields: Seq[Field])
     io.append(')')
   }
 
-  override
-  def clone: Effect =
+  def copy: Effect =
   {
-    new Effect(kind,name,fields)
+    new Effect(kind,name,fields.map(f ⇒ f.copy))
   }
-
-
 }
 
 //****************************************************************************
@@ -98,8 +87,8 @@ object Effect
     e
   }
 
-  def apply(name: Name): Effect = Effects.byname(name).clone
-  def apply(kind: Kind): Effect = Effects.bykind(kind).clone
+  def apply(name: Name): Effect = Effects.byname(name).copy
+  def apply(kind: Kind): Effect = Effects.bykind(kind).copy
 
   /**
    *
@@ -125,7 +114,7 @@ object Effect
 
     val e = new Effect(kind,name,k ++ fs)
 
-    k.foreach(f ⇒ f.effect(e))
+    k.foreach(f ⇒ f.set(e))
     e
   }
 }

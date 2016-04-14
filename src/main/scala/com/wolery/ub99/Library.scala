@@ -33,17 +33,17 @@ final class Library
 
     if (n == 0)
     {
-      throw bad_load_path
+      bad_load_path()
     }
 
     if (n != b.length)
     {
-      throw bad_load_format
+      bad_load_format()
     }
 
     if (substring(b,0,10).compareTo("UB99 V1.00") != 0)
     {
-      throw bad_load_format
+      bad_load_format()
     }
 
     var i = 0
@@ -86,6 +86,12 @@ final class Library
     io.append('\n' + break)
     io.flush()
   }
+
+  def bad_load_path()     = error("cannot open patch library 'PATH'.")
+  def bad_load_format()   = error("cannot load 'PATH'; the file is not a patch library.")
+  def bad_edit_path()     = error("cannot open patch text file 'PATH'.")
+  def bad_dump_path()     = error("cannot dump patch text file to 'PATH'.")
+  def bad_save_path()     = error("cannot save patch library to 'PATH'.")
 
   def get(slot: Slot) : Effect     = ???
   def set(slot: Slot,e: Effect)    = ???

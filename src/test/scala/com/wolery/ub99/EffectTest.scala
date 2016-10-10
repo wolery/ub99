@@ -13,8 +13,6 @@
 //****************************************************************************
 
 package com.wolery.ub99
-import org.scalacheck._
-import org.scalacheck.Gen._
 import org.scalatest.FunSuite
 import org.scalatest.prop.PropertyChecks
 

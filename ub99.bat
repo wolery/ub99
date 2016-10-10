@@ -15,8 +15,8 @@
 
 setlocal
 
-set JVM=-Xms1G -DIGNITE_PERFORMANCE_SUGGESTIONS_DISABLED=true
-set JAR=cache-loader.jar
+set JVM=
+set JAR=target/ub99-1.0.0.jar
 
 :: ***************************************************************************
 

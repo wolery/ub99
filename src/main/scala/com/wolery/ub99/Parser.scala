@@ -53,7 +53,7 @@ final class Parser(reader: Reader)
     {
       val l = {skip("#");read("S")}
 
-      if (l.value != "line")
+      if (l.lexeme != "line")
       {
         bad_syntax("S",l)
       }
@@ -85,7 +85,7 @@ final class Parser(reader: Reader)
 
       if (peek() != '=')
       {
-        onUpdate(TokenOf('S',s.line,"NAME"),s)
+        onUpdate(Token('S',"NAME",s.line),s)
       }
       else
       {
@@ -162,8 +162,6 @@ final class Parser(reader: Reader)
       parseStatement()
     }
   }
-
-  type Token            = TokenOf[Any]
 
   var m_slt: ℤ          = 1
   var m_tok: Token      = null

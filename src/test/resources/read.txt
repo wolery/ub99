@@ -37,7 +37,7 @@
 35:   Reverb>Chorus      ("JB Reverb  4",IDLY:=150,FREQ:=1.7,MDT:=60,WAVE:=Sine,RT:=4,HRAT:=0.8,DNST:=100,LPF:=5678.45,BAL:=0,AMDP:=50,PMDP:=50,MIX:=11)
 36:   Amp                (AMP:=Solid,GAIN:=5,MSTR:=5,NGHL:=150.701,NGDC:=40.7609)
 37:   2                  () // AH Swell   2
-38:   5                  () // AH Chorus  3
+38:   5                  () // AH Chorus  3 /* an example of a block comment */
 39:   20                 () // AH Lead    6
 40:   2                  () // AH Swell   2
 41:   28                 () // JB Chorus  1

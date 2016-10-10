@@ -43,6 +43,7 @@ package object ub99
   val effect_size       = 0x009F      // ...number of bytes per patch block
   val header_size       = 0x0600      // ...number of bytes per file header
   val longest_lexeme    = 32          // ...maximum characters in a lexeme
+  val eof               = '\uFFFF'
 
   object update extends Enumeration   // How to update an integral field?
   {

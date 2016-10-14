@@ -34,6 +34,8 @@ trait Field
   def set(v: ℝ)                      : Unit
   def set(v: Name)                   : Unit
   def set(e: Effect)                 : Unit
+
+  def help                           : String
 }
 
 //****************************************************************************
@@ -91,6 +93,8 @@ abstract class FieldOf[Value](n: Name,c: Code,val d: Value) extends Field
       return bytes(43 + c)                               // ...read the byte
     }
   }
+
+  def help: String = "help string"
 }
 
 //****************************************************************************

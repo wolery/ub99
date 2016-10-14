@@ -14,11 +14,8 @@
 
 package com.wolery.ub99
 
-import java.io.FileInputStream
-import java.io.FileOutputStream
+import java.io._
 import org.apache.commons.cli._
-import java.io.PrintStream
-import java.io.PrintWriter
 
 //****************************************************************************
 
@@ -29,15 +26,16 @@ object Main
     try
     {
       val c: CommandLine = parse(args);
-
-      if (c.hasOption('v'))
-      {
-        doVersion()
-      }
+      val l: Library     = new Library();
 
       if (c.hasOption('h'))
       {
         doHelp()
+      }
+      else
+      if (c.hasOption('v'))
+      {
+        doVersion()
       }
       else
       if (c.hasOption('q'))
@@ -46,8 +44,6 @@ object Main
       }
       else
       {
-        val l = new Library();
-
         onPath(c,'l',p ⇒ l.load(new FileInputStream (p)))
         onPath(c,'r',p ⇒ l.read(new FileInputStream (p)))
         onPath(c,'d',p ⇒ l.dump(new PrintWriter     (p)))
@@ -60,61 +56,82 @@ object Main
       {
         println(e)
         println(e.getMessage)
+        System.exit(1)
       }
     }
   }
 
   def doHelp() =
   {
-    println("usage: ub99 [options]")
+    println("Usage: ub99 [options]")
+    println("Creates and parses MagicStomp UB99 patch library files.")
     println("")
-    println("options:")
-    println(" -l,--load <path>              patch library to load")
-    println(" -r,--read <path>              patch text file to read")
-    println(" -d,--dump <path>              patch text file to dump")
-    println(" -s,--save <path>              patch library to save")
-    println(" -q,--query [effect[.field]>]  list effect types or field names")
-    println(" -h,--help                     print this help message")
-    println(" -q,--version                  print version information")
+    println("Options:")
+    println(" -l,--load <path>                patch library to load")
+    println(" -r,--read <path>                patch text file to read")
+    println(" -d,--dump <path>                patch text file to dump")
+    println(" -s,--save <path>                patch library to save")
+    println(" -q,--query [effect[.field]>]    list effect types or field names")
+    println(" -h,--help                       print this help message")
+    println(" -v,--version                    print version information")
   }
 
   def doVersion() =
   {
     println("MagicStomp Patch Editing Utility v1.0.0.")
     println("Copyright © Jonathon Bell. All rights reserved.")
-    println("")
-    println("Creates and parses MagicStomp UB99 patch library files.")
   }
 
-  def onPath(c: CommandLine,o: Char,act: String⇒Unit) =
+  /**
+   * @param query
+   */
+  def doQuery(query: String) =
   {
-    if (c.hasOption(o))
+    val (n,f) = query.span(_ != '.')
+
+    try
     {
-      val p = c.getOptionValue(o)
+      val e = Effect(n)
 
       try
       {
-        act(p)
+        println(e(f.drop(1)).help)
+      }
+      catch
+      {
+        case _: NoSuchElementException ⇒ write(e.help)
+      }
+    }
+    catch
+    {
+      case _: NoSuchElementException   ⇒ write(Effects.help)
+    }
+
+    def write(seq: Seq[String]) =
+    {
+      val s = if (seq.size % 2 == 0) seq else seq :+ ""
+      val n = s.size / 2
+
+      for (i ← 0 until n)
+      {
+        println(f"${s(i)}%-20s ${s(n+i)}%s")
+      }
+     }
+  }
+
+  def onPath(c: CommandLine,option: Char,action: String⇒Unit) =
+  {
+    if (c.hasOption(option))
+    {
+      val p = c.getOptionValue(option)
+
+      try
+      {
+        action(p)
       }
       catch
       {
         case e: Error ⇒ e.patchAndRethrow(p)
-      }
-    }
-  }
-
-  def doQuery(query: String) =
-  {
-    query.indexOf('.') match
-    {
-      case -1 ⇒
-      {
-        val e: Effect = Effect(query)
-      }
-      case i ⇒
-      {
-        println(query.substring(0,i))
-        println(query.substring(i+1))
       }
     }
   }
@@ -127,8 +144,8 @@ object Main
     .addOption(new Option("d","dump",   true, "patch text file to dump"))
     .addOption(new Option("s","save",   true, "patch library to save"))
     .addOption(new Option("q","query",  true, "list effect types or field names"))
-    .addOption(new Option("h","help",   false,"prints this help message"))
-    .addOption(new Option("v","version",false,"prints version information"))
+    .addOption(new Option("h","help",   false,"print this help message"))
+    .addOption(new Option("v","version",false,"print version information"))
     ,args);
   }
 }

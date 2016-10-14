@@ -175,7 +175,7 @@ object Fields
     def load(b: Bytes)          = get(b) match
     {
       case c if c==none         ⇒ m_val = "NONE"
-      case code                 ⇒ m_val = m_eff.field(code).name
+      case code                 ⇒ m_val = m_eff(code).name
     }
 
     def copy                    = {val f = newKnob(n,c,d); f.set(m_eff); f}

@@ -1966,7 +1966,9 @@ object Effects
    newLinear ("CKNE",0x28,0,1,5)))                       // Compressor Knee
  //newKnobs  (0x23,0x08,0x09)))                          // CRAT, GAIN MSTR
 
-  val byname: Map[Name,Effect] = bykind.map(e ⇒ e.name → e).toMap
+  val byname: Map[Name,Effect] = bykind.map(e ⇒ e.name.toUpperCase → e).toMap
+
+  def help: Seq[String]   = bykind.map(e ⇒ e.name).sorted
 }
 
 //****************************************************************************

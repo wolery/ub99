@@ -25,11 +25,12 @@ import java.io.OutputStream
 
 class Effect (val kind: Kind,val name: Name,val fields: Seq[Field])
 {
-  val m_name: Map[Name,Field]    = TreeMap(fields.map(f ⇒ f.name→f):_*)
+  val m_name: Map[Name,Field]    = TreeMap(fields.map(f ⇒ f.name.toUpperCase→f):_*)
   val m_code: Map[Code,Field]    = TreeMap(fields.map(f ⇒ f.code→f):_*)
 
-  def field(name: Name): Field   = m_name(name)
-  def field(code: Code): Field   = m_code(code)
+  def apply(name: Name): Field   = m_name(name.toUpperCase)
+  def apply(code: Code): Field   = m_code(code)
+  def help: Seq[String]          = fields.map(f ⇒ f.name).sorted
 
   /**
    *
@@ -81,14 +82,21 @@ object Effect
   def apply(): Effect =
   {
     val e = Effect("Amp")
-    e.field("AMP" ).set("Solid")
-    e.field("GAIN").set(0.5)
-    e.field("MSTR").set(0.5)
+    e("AMP" ).set("Solid")
+    e("GAIN").set(0.5)
+    e("MSTR").set(0.5)
     e
   }
 
-  def apply(name: Name): Effect = Effects.byname(name).copy
-  def apply(kind: Kind): Effect = Effects.bykind(kind).copy
+  def apply(name: Name): Effect =
+  {
+    Effects.byname(name.toUpperCase).copy
+  }
+
+  def apply(kind: Kind): Effect =
+  {
+    Effects.bykind(kind).copy
+  }
 
   /**
    *

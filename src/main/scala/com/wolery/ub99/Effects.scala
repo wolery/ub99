@@ -743,7 +743,7 @@ object Effects
    new1To8   ("SYN8",0x6A,8)),                           // Synchronization
  //newKnobs  (0x08,0x09,0x0A)),                          // ELVL, DLVL, DPAN
 
-/* Guitar amplifier simulation modelled on the Yamaha DG series amplifiers...*/
+/* Guitar amplifier simulation modeled on the Yamaha DG series amplifiers...*/
 
   Effect(0x08,"Amp","GAIN","MSTR","TONE",                // AmpSimulator
    newAmpType("AMP" ,0x0B),                              // Amplifier Type
@@ -1968,7 +1968,7 @@ object Effects
 
   val byname: Map[Name,Effect] = bykind.map(e ⇒ e.name.toUpperCase → e).toMap
 
-  def help: Seq[String]   = bykind.map(e ⇒ e.name).sorted
+  def help: Unit = Utilities.tabulate(bykind.map(e ⇒ e.name))
 }
 
 //****************************************************************************

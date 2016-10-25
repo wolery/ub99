@@ -18,28 +18,23 @@ package com.wolery
 
 package object ub99
 {
-  type ℕ               = Int
-  type ℤ               = Int
-  type ℝ               = Double
-  type Bool            = Boolean
-  type Name            = String
-  type Slot            = Int
-  type Code            = Int
-  type Kind            = Int
-  type Index           = Int
+  type ℕ                = Int
+  type ℤ                = Int
+  type ℝ                = Double
+  type Name             = String
+  type Slot             = Int
+  type Code             = Int
+  type Kind             = Int
+  type Point            = (ℕ,ℝ)
+  type Writer           = java.io.Writer
+  type Bytes            = Array[Byte]
 
-  type Bytes           = Array[Byte]
-  type Maybe[α]        = Option[α]
-
-  type Point           = (ℕ,ℝ)
-  type Points          = Seq[Point]
-
-  val none:Code        = 0x6B         // ...the value of an unassigned knob
+  val none: Code        = 0x6B        // ...the value of an unassigned knob
 
   val name_size         = 12          // ...number of bytes per patch name
   val library_size      = 99          // ...number of patches per library
   val image_size        = 0x4400      // ...number of bytes per library file
-  val image_header      = "UB99 V1.00"
+  val image_header      = "UB99 V1.00"// ...
   val effect_size       = 0x009F      // ...number of bytes per patch block
   val header_size       = 0x0600      // ...number of bytes per file header
   val longest_lexeme    = 32          // ...maximum characters in a lexeme

@@ -14,12 +14,13 @@
 
 package com.wolery.ub99
 
-import Fields._
-import Effects._
-import java.io.Writer
-import scala.collection.immutable.TreeMap
-import java.io.InputStream
 import java.io.OutputStream
+
+import scala.collection.immutable.TreeMap
+
+import Fields.newKnob
+import Fields.newName
+import Utilities.{tabulate,replace}
 
 //****************************************************************************
 
@@ -30,19 +31,12 @@ class Effect (val kind: Kind,val name: Name,val fields: Seq[Field])
 
   def apply(name: Name): Field   = m_name(name.toUpperCase)
   def apply(code: Code): Field   = m_code(code)
-  def help: Seq[String]          = fields.map(f ⇒ f.name).sorted
+  def names            : Seq[Name] = fields.map(f ⇒ f.name)
+  def help             : Unit    = tabulate(names)
 
-  /**
-   *
-   */
   def save(io: OutputStream) =
-  {
+  {}
 
-  }
-
-  /**
-   *
-   */
   def dump(io: Writer) =
   {
     var first = true
@@ -51,7 +45,7 @@ class Effect (val kind: Kind,val name: Name,val fields: Seq[Field])
 
     for (f ← fields)
     {
-      if (f.dirty)
+      if (f.dirty || Main.all_fields)
       {
         if (first)
         {
@@ -98,9 +92,6 @@ object Effect
     Effects.bykind(kind).copy
   }
 
-  /**
-   *
-   */
   def apply(bytes: Array[Byte]): Effect =
   {
     val e = Effect(bytes(1))
@@ -110,9 +101,6 @@ object Effect
     e
   }
 
-  /**
-   *
-   */
   def apply(kind: Kind,name: Name,k1: Name,k2: Name,k3: Name,fs: Field*): Effect =
   {
     val k = Seq(newName("NAME",-16,"            "),

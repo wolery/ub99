@@ -16,16 +16,12 @@ package com.wolery.ub99
 
 import java.io.InputStream
 import java.io.OutputStream
-import java.io.Writer
-import Utils._
+import Utilities._
 
 //****************************************************************************
 
 final class Library
 {
-  /**
-   *
-   */
   def load(io: InputStream) =
   {
     val b = new Array[Byte](image_size)
@@ -57,19 +53,10 @@ final class Library
     }
   }
 
-  /**
-   *
-   */
   def read(i: InputStream) = {}
 
-  /**
-   *
-   */
   def save(o: OutputStream) = {}
 
-  /**
-   *
-   */
   def dump(io: Writer) =
   {
     val break = "//" + "*" * 76 + '\n'

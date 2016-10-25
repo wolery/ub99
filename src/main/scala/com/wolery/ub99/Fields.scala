@@ -14,11 +14,10 @@
 
 package com.wolery.ub99
 
-import update.update
-import java.io.Writer
-import java.io.OutputStream
-import java.io.InputStream
-import Utils._
+import Utilities.substring
+import Utilities.tabulate
+import Utilities.replace
+
 //****************************************************************************
 
 object Fields
@@ -125,36 +124,37 @@ object Fields
       (0x43, 20.0),
       (0x53,100.0))
 
-// Exponential Fields
+// Frequency Fields
 
-  def newFreqcy (n: Name,c: Code,l: ℝ,h: ℝ,s: ℕ): Field = newFreqcy(n,c,l,h,s,l)
+  def newFreqcy (n: Name,c: Code,l: Hz,h: Hz,s: ℕ):       Field = newFreqcy(n,c,l,l,h,s)
+  def newFreqcy (n: Name,c: Code,l: Hz,h: Hz,s: ℕ,d: Hz): Field = newFreqcy(n,c,d,l,h,s)
 
-  def newHiPass (n: Name,c: Code,d: ℝ = 20)   :Field   = newFreqcy(n,c,20,   8e3, 104,d)
-  def newLoPass (n: Name,c: Code,d: ℝ = 17e3) :Field   = newFreqcy(n,c,50,  17e3, 101,d)
-  def newHSHFreq(n: Name,c: Code,d: ℝ = 50)   :Field   = newFreqcy(n,c,50,  16e3, 100,d)
-  def newLSHFreq(n: Name,c: Code,d: ℝ = 21.2) :Field   = newFreqcy(n,c,21.2,8e3,  103,d)
+  def newHiPass (n: Name,c: Code,d: Hz = 20.0): Field   = newFreqcy(n,c,d,20,   8e3, 104)
+  def newLoPass (n: Name,c: Code,d: Hz = 17e3): Field   = newFreqcy(n,c,d,50,  17e3, 101)
+  def newHSHFreq(n: Name,c: Code,d: Hz = 50.0): Field   = newFreqcy(n,c,d,50,  16e3, 100)
+  def newLSHFreq(n: Name,c: Code,d: Hz = 21.2): Field   = newFreqcy(n,c,d,21.2,8e3,  103)
 
 // Choice Fields
 
   def newChoice (n: Name,c: Code,s: String*): Field     = newChoice(n,c,0,s:_*)
 
-  def newPhase  (n: Name,c: Code,i: Index = 0)          = newChoice(n,c,i,"Normal","Reverse")
-  def newWavSO  (n: Name,c: Code,i: Index = 0)          = newChoice(n,c,i,"Sine","Other")
-  def newWavST  (n: Name,c: Code,i: Index = 0)          = newChoice(n,c,i,"Sine","Triangle")
-  def newWavTUD (n: Name,c: Code,i: Index = 0)          = newChoice(n,c,i,"Triangle","SawUp","SawDown")
-  def newFltType(n: Name,c: Code,i: Index = 0)          = newChoice(n,c,i,"LowPass","HighPass","BandPass")
-  def newPanDir (n: Name,c: Code,i: Index = 0)          = newChoice(n,c,i,"L<->R","L->R","L<-R","TurnL","TurnR")
-  def newERType (n: Name,c: Code,i: Index = 0)          = newChoice(n,c,i,"SmallHall","LargeHall","Random","Reverse","Plate","Spring")
-  def newSimType(n: Name,c: Code,i: Index = 0)          = newChoice(n,c,i,"Flat","Tube","Solid","R&BVintage","Modern","Classic","Heavy","Drive","Dist","Fuzz")
-  def newAmpType(n: Name,c: Code,i: Index = 0)          = newChoice(n,c,i,"Heavy1","Heavy2","Lead1","Lead2","Drive1","Drive2","Crunch1","Crunch2","Clean1","Clean2","Solid")
-  def newDstType(n: Name,c: Code,i: Index = 0)          = newChoice(n,c,i,"Lead1","Lead2","Drive1","Drive2","Crunch1","Crunch2","Fuzz1","Fuzz2","Distortion1","Distortion2","Overdrive1","Overdrive2","Tube","Solid","Bypass")
-  def newSpkType(n: Name,c: Code,i: Index = 0)          = newChoice(n,c,i,"Off","American412","British412","Modern412","Yamaha412","Hybrid412","American212","British212","Modern212","Yamaha212","Hybrid212","American112","Modern112","Yamaha112","Hybrid112","Generic410","Generic210")
-  def newMicType(n: Name,c: Code,i: Index = 0)          = newChoice(n,c,i,"Condenser1","Condenser2","Dynamic1","Dynamic2","Tube1","Tube2","Nylon String1","Nylon String2")
-  def newDigType(n: Name,c: Code,i: Index = 0)          = newChoice(n,c,i,"Distortion1","Distortion2","Overdrive1","Overdrive2","Crunch")
+  def newPhase  (n: Name,c: Code)                       = newChoice(n,c,0,"Normal","Reverse")
+  def newWavSO  (n: Name,c: Code)                       = newChoice(n,c,0,"Sine","Other")
+  def newWavTUD (n: Name,c: Code)                       = newChoice(n,c,0,"Triangle","SawUp","SawDown")
+  def newPanDir (n: Name,c: Code)                       = newChoice(n,c,0,"L<->R","L->R","L<-R","TurnL","TurnR")
+  def newSimType(n: Name,c: Code)                       = newChoice(n,c,0,"Flat","Tube","Solid","R&BVintage","Modern","Classic","Heavy","Drive","Dist","Fuzz")
+  def newAmpType(n: Name,c: Code)                       = newChoice(n,c,0,"Heavy1","Heavy2","Lead1","Lead2","Drive1","Drive2","Crunch1","Crunch2","Clean1","Clean2","Solid")
+  def newDstType(n: Name,c: Code)                       = newChoice(n,c,0,"Lead1","Lead2","Drive1","Drive2","Crunch1","Crunch2","Fuzz1","Fuzz2","Distortion1","Distortion2","Overdrive1","Overdrive2","Tube","Solid","Bypass")
+  def newSpkType(n: Name,c: Code)                       = newChoice(n,c,0,"Off","American412","British412","Modern412","Yamaha412","Hybrid412","American212","British212","Modern212","Yamaha212","Hybrid212","American112","Modern112","Yamaha112","Hybrid112","Generic410","Generic210")
+  def newMicType(n: Name,c: Code)                       = newChoice(n,c,0,"Condenser1","Condenser2","Dynamic1","Dynamic2","Tube1","Tube2","Nylon String1","Nylon String2")
+  def newDigType(n: Name,c: Code)                       = newChoice(n,c,0,"Distortion1","Distortion2","Overdrive1","Overdrive2","Crunch")
+  def newFltType(n: Name,c: Code,d: ℕ)     /**/     = newChoice(n,c,d,"LowPass","HighPass","BandPass")
+  def newERType (n: Name,c: Code,d: ℕ)     /**/     = newChoice(n,c,d,"SmallHall","LargeHall","Random","Reverse","Plate","Spring")
+  def newWavST  (n: Name,c: Code,d: ℕ = 0) /**/     = newChoice(n,c,d,"Sine","Triangle")
 
-// Other Fields
+// Field Implementations
 
-  def newName(n: Name,c: Code,d: Name): Field = new FieldOf(n,c,d)
+  def newName(n: Name,c: Code,d: Name): Field = new FieldOf[String](n,c,d)
   {
     override
     def load(b: Bytes)          = m_val = substring(b,16,12)
@@ -163,41 +163,43 @@ object Fields
     def dump(w: Writer)         = w.append('"' + f"$m_val%-12s" + '"')
 
     def copy                    = newName(n,c,d)
+    def help                    = println(s"A string of at most 12 characters")
   }
 
-  def newKnob(n: Name,c: Code,d: Name): Field = new FieldOf(n,c,d)
+  def newKnob(n: Name,c: Code,d: Name): Field = new FieldOf[String](n,c,d)
   {
     var m_eff: Effect           = null;
     override
-    def set(e: Effect)          = {assert(m_eff == null); m_eff = e}
+    def set(e: Effect)          = {assert(m_eff==null && e!=null); m_eff = e}
 
     override
     def load(b: Bytes)          = get(b) match
     {
-      case c if c==none         ⇒ m_val = "NONE"
+      case code if code==none   ⇒ m_val = "NONE"
       case code                 ⇒ m_val = m_eff(code).name
     }
 
     def copy                    = {val f = newKnob(n,c,d); f.set(m_eff); f}
+    def help                    = tabulate(replace(m_eff.names,s"$default*",default,"KNB1","KNB2","KNB3"))
   }
 
-  def newChoice(n: Name,c: Code,x: ℕ,s: String*): Field = new FieldOf(n,c,s(x))
+  def newChoice(n: Name,c: Code,d: ℕ,s: String*): Field = new FieldOf[String](n,c,s(d))
   {
-    def copy                    = newChoice(n,c,x,s:_*)
+    def copy                    = newChoice(n,c,d,s:_*)
+    def help                    = tabulate(replace(s,s"$default*",default))
   }
 
-  def newLinear(n: Name,c: Code,d: ℝ,p: Point*): Field = new FieldOf(n,c,d)
+  def newLinear(n: Name,c: Code,d: ℝ,p: Point*): Field = new FieldOf[ℝ](n,c,d)
   {
     def copy                    = newLinear(n,c,d,p:_*)
+    def help                    = println(s"A number between ${p(0)._2} and ${p(p.size-1)._2} [$default*]")
   }
 
-  def newFreqcy (n: Name,c: Code,l: ℝ,h: ℝ,s: ℕ,d: ℝ): Field = new FieldOf(n,c,d)
+  def newFreqcy(n: Name,c: Code,d: Hz,l: Hz,h: Hz,s: Hz): Field = new FieldOf[Hz](n,c,d)
   {
     def copy                    = newFreqcy(n,c,l,h,s,d)
+    def help                    = println(s"A frequency between $l and $h [$default*]")
   }
-
-//****************************************************************************
-
 }
 
 //****************************************************************************

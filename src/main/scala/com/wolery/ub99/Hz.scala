@@ -16,24 +16,27 @@ package com.wolery.ub99
 
 //****************************************************************************
 
-object Utils
+case class Hz (Hz: ℝ)
 {
-/**
- *  Round the real number 'reall' off to the nearest integer.
- */
-def round(real: ℝ): Int = (real + 0.5).toInt
+  assert(Hz > 0,"non-positive Hz")
 
-/**
- * True if the real numbers 'r1' and 'r2' differ by only a teensy weensy bit.
- */
-//def almostEqual(r1: ℝ,r2: ℝ): Bool = Double.abs(r2 - r1) < 0.00001;
+  def kHz: ℝ = Hz * 1e-3
 
+  override
+  def equals(any: Any) = any match
+  {
+    case that: Hz ⇒ Math.abs(this.Hz - that.Hz) < 1e-2
+    case _        ⇒ false
+  }
 
-def substring(bytes: Bytes,o:Int,n:Int): String =
-{
-  (new String(bytes.slice(o,o+n))).intern
+  override
+  def toString: String = if (kHz >= 1) f"$kHz%.2fkHz" else f"$Hz%.2fHz"
 }
 
-}
+object Hz
+{
+  import scala.language.implicitConversions
 
+  implicit def hertz(hz: ℝ): Hz = Hz(hz)
+}
 //****************************************************************************

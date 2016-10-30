@@ -155,7 +155,7 @@ object Fields
 // Field Implementations
 
   def newName(n: Name,c: Code,d: Name): Field = new FieldOf[String](n,c,d)
-  {
+  {def toInt = ???
     override
     def save(b: Bytes)          = m_val.getBytes.copyToArray(b,16)
     override
@@ -193,20 +193,37 @@ object Fields
     def help                    = tabulate(replace(s,s"$default*",default))
   }
 
-  def newLinear(n: Name,c: Code,d: ℝ,p: Point*): Field = new FieldOf[ℝ](n,c,d)
-  {
-    override def toInt = 3
-
-    def copy                    = newLinear(n,c,d,p:_*)
-    def help                    = println(s"A number between ${p(0)._2} and ${p(p.size-1)._2} [$default*]")
-  }
-
   def newFreqcy(n: Name,c: Code,d: Hz,l: Hz,h: Hz,s: Hz): Field = new FieldOf[Hz](n,c,d)
   {
     override def toInt = 4
     def copy                    = newFreqcy(n,c,l,h,s,d)
     def help                    = println(s"A frequency between $l and $h [$default*]")
   }
+
+  def newLinear(n: Name,c: Code,d: ℝ,p: Point*): Field = new FieldOf[ℝ](n,c,d)
+  {
+    assert(p.size >= 2)
+
+    def copy                    = newLinear(n,c,d,p:_*)
+    def help                    = println(s"A number between ${p(0)._2} and ${p(p.size-1)._2} [$default*]")
+
+    def toInt =
+    {
+      var i = 0
+
+      while (p(i+1)._2 < m_val)
+      {
+        i+=1
+      }
+
+      val (pi,pr) = p(i)
+      val (qi,qr) = p(i+1)
+      val r = pi + (m_val - pr) / ((qr - pr) / (qi - pi))
+
+      Math.round(pi + (m_val - pr) / ((qr - pr) / (qi - pi))).toShort
+    }
+  }
+
 }
 
 //****************************************************************************

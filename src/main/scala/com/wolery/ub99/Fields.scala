@@ -157,6 +157,8 @@ object Fields
   def newName(n: Name,c: Code,d: Name): Field = new FieldOf[String](n,c,d)
   {
     override
+    def save(b: Bytes)          = m_val.getBytes.copyToArray(b,16)
+    override
     def load(b: Bytes)          = m_val = substring(b,16,12)
 
     override
@@ -178,6 +180,7 @@ object Fields
       case code if code==none   ⇒ m_val = "NONE"
       case code                 ⇒ m_val = m_eff(code).name
     }
+    override def toInt = 1
 
     def copy                    = {val f = newKnob(n,c,d); f.set(m_eff); f}
     def help                    = tabulate(replace(m_eff.names,s"$default*",default,"KNB1","KNB2","KNB3"))
@@ -185,18 +188,22 @@ object Fields
 
   def newChoice(n: Name,c: Code,d: ℕ,s: String*): Field = new FieldOf[String](n,c,s(d))
   {
+    override def toInt          = s.indexOf(m_val).toShort
     def copy                    = newChoice(n,c,d,s:_*)
     def help                    = tabulate(replace(s,s"$default*",default))
   }
 
   def newLinear(n: Name,c: Code,d: ℝ,p: Point*): Field = new FieldOf[ℝ](n,c,d)
   {
+    override def toInt = 3
+
     def copy                    = newLinear(n,c,d,p:_*)
     def help                    = println(s"A number between ${p(0)._2} and ${p(p.size-1)._2} [$default*]")
   }
 
   def newFreqcy(n: Name,c: Code,d: Hz,l: Hz,h: Hz,s: Hz): Field = new FieldOf[Hz](n,c,d)
   {
+    override def toInt = 4
     def copy                    = newFreqcy(n,c,l,h,s,d)
     def help                    = println(s"A frequency between $l and $h [$default*]")
   }

@@ -17,6 +17,6 @@
 </listAttribute>
 <booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_START_ON_FIRST_THREAD" value="true"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="com.wolery.ub99.Main"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-q AMP&#10;-l /Users/Jonathon/Dropbox/Settings/jonathon.ub9&#10;-r etc/test.txt&#10;-d dump.txt&#10;-s test.ub9"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-l src/test/resources/ub9/jb.ub9&#10;-s src/test/resources/ub9/jb.ub9.tmp"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="ub99"/>
 </launchConfiguration>

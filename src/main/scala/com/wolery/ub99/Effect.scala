@@ -34,8 +34,14 @@ class Effect (val kind: Kind,val name: Name,val fields: Seq[Field])
   def names            : Seq[Name] = fields.map(f ⇒ f.name)
   def help             : Unit    = tabulate(names)
 
-  def save(io: OutputStream) =
-  {}
+  def save(bytes: Bytes) =
+  {
+    bytes(1) = kind
+    for (f ← fields)
+    {
+      f.save(bytes)
+    }
+  }
 
   def dump(io: Writer) =
   {
@@ -92,7 +98,7 @@ object Effect
     Effects.bykind(kind).copy
   }
 
-  def apply(bytes: Array[Byte]): Effect =
+  def apply(bytes: Bytes): Effect =
   {
     val e = Effect(bytes(1))
 

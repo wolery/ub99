@@ -24,7 +24,7 @@ package object ub99
   type Name             = String
   type Slot             = Int
   type Code             = Int
-  type Kind             = Int
+  type Kind             = Byte
   type Point            = (ℕ,ℝ)
   type Writer           = java.io.Writer
   type Bytes            = Array[Byte]
@@ -32,11 +32,11 @@ package object ub99
   val none: Code        = 0x6B        // ...the value of an unassigned knob
 
   val name_size         = 12          // ...number of bytes per patch name
-  val library_size      = 99          // ...number of patches per library
-  val image_size        = 0x4400      // ...number of bytes per library file
-  val image_header      = "UB99 V1.00"// ...
-  val effect_size       = 0x009F      // ...number of bytes per patch block
-  val header_size       = 0x0600      // ...number of bytes per file header
+//val library_size      = 99          // ...number of patches per library
+//val image_size        = 0x4400      // ...number of bytes per library file
+//val image_header      = "UB99 V1.00"// ...
+//val effect_size       = 0x009F      // ...number of bytes per patch block
+//val header_size       = 0x0600      // ...number of bytes per file header
   val longest_lexeme    = 32          // ...maximum characters in a lexeme
   val eof               = '\uFFFF'
 

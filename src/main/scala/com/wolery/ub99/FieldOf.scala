@@ -20,9 +20,9 @@ import Utilities.between
  * Partially implements the abstract Field interface.
  *
  * @tparam Value    -
- * @param  name			-
- * @param  code			-
- * @param  default	-
+ * @param  name      -
+ * @param  code      -
+ * @param  default  -
  *
  * @author Jonathon Bell
  */
@@ -46,10 +46,15 @@ extends Field
   def set(effect: Effect)           = {}
 
   def load(bytes:  Bytes)           = {}
-  def save(bytes:  Bytes)           = {}
+
   def dump(writer: Writer)          = writer.append(s"$name:=$m_val")
 
-  def put(bytes: Bytes,v: ℤ) =
+  def save(bytes: Bytes) =
+  {
+    put(bytes,toInt)
+  }
+
+  def put(bytes: Bytes,v: Short) =
   {
     assert(code != -16)
 

@@ -37,6 +37,9 @@ trait Field
   def set(effect: Effect)            : Unit
 
   def help                           : Unit
+
+
+  def toInt: Short = 0
 }
 
 //****************************************************************************

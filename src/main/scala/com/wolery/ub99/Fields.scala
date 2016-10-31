@@ -126,13 +126,13 @@ object Fields
 
 // Frequency Fields
 
-  def newFreqcy (n: Name,c: Code,l: Hz,h: Hz,s: ℕ):       Field = newFreqcy(n,c,l,l,h,s)
-  def newFreqcy (n: Name,c: Code,l: Hz,h: Hz,s: ℕ,d: Hz): Field = newFreqcy(n,c,d,l,h,s)
+  def newFreqcy (n: Name,c: Code,l: Hz,h: Hz,s: ℕ):       Field = newFreqcy(n,c,l,h,s,l)
+//def newFreqcy (n: Name,c: Code,l: Hz,h: Hz,s: ℕ,d: Hz): Field = newFreqcy(n,c,l,h,s,d)
 
-  def newHiPass (n: Name,c: Code,d: Hz = 20.0): Field   = newFreqcy(n,c,d,20,   8e3, 104)
-  def newLoPass (n: Name,c: Code,d: Hz = 17e3): Field   = newFreqcy(n,c,d,50,  17e3, 101)
-  def newHSHFreq(n: Name,c: Code,d: Hz = 50.0): Field   = newFreqcy(n,c,d,50,  16e3, 100)
-  def newLSHFreq(n: Name,c: Code,d: Hz = 21.2): Field   = newFreqcy(n,c,d,21.2,8e3,  103)
+  def newHiPass (n: Name,c: Code,d: Hz = 20.0): Field   = newFreqcy(n,c,20,   8e3, 104,d)
+  def newLoPass (n: Name,c: Code,d: Hz = 17e3): Field   = newFreqcy(n,c,50,  17e3, 101,d)
+  def newHSHFreq(n: Name,c: Code,d: Hz = 50.0): Field   = newFreqcy(n,c,50,  16e3, 100,d)
+  def newLSHFreq(n: Name,c: Code,d: Hz = 21.2): Field   = newFreqcy(n,c,21.2,8e3,  103,d)
 
 // Choice Fields
 
@@ -153,6 +153,7 @@ object Fields
   def newWavST  (n: Name,c: Code,d: ℕ = 0) /**/     = newChoice(n,c,d,"Sine","Triangle")
 
 // Field Implementations
+  import Math.{log,round}
 
   def newName(n: Name,c: Code,d: Name): Field = new FieldOf[String](n,c,d)
   {def toInt = ???
@@ -180,7 +181,12 @@ object Fields
       case code if code==none   ⇒ m_val = "NONE"
       case code                 ⇒ m_val = m_eff(code).name
     }
-    override def toInt = 1
+
+    def toInt = m_val match
+    {
+      case "NONE" => none
+      case name   => m_eff(name).code
+    }
 
     def copy                    = {val f = newKnob(n,c,d); f.set(m_eff); f}
     def help                    = tabulate(replace(m_eff.names,s"$default*",default,"KNB1","KNB2","KNB3"))
@@ -188,16 +194,22 @@ object Fields
 
   def newChoice(n: Name,c: Code,d: ℕ,s: String*): Field = new FieldOf[String](n,c,s(d))
   {
-    override def toInt          = s.indexOf(m_val).toShort
+    def toInt                   = s.indexOf(m_val)
     def copy                    = newChoice(n,c,d,s:_*)
     def help                    = tabulate(replace(s,s"$default*",default))
   }
 
-  def newFreqcy(n: Name,c: Code,d: Hz,l: Hz,h: Hz,s: Hz): Field = new FieldOf[Hz](n,c,d)
+  def newFreqcy(n: Name,c: Code,l: Hz,h: Hz,s: Hz,d: Hz): Field = new FieldOf[Hz](n,c,d)
   {
-    override def toInt = 4
     def copy                    = newFreqcy(n,c,l,h,s,d)
     def help                    = println(s"A frequency between $l and $h [$default*]")
+
+    def toInt =
+    {
+      val m_phi: ℝ = log(h.Hz / l.Hz) / s.Hz
+
+      round(log(m_val.Hz / l.Hz) / m_phi).toInt
+    }
   }
 
   def newLinear(n: Name,c: Code,d: ℝ,p: Point*): Field = new FieldOf[ℝ](n,c,d)
@@ -220,7 +232,7 @@ object Fields
       val (qi,qr) = p(i+1)
       val r = pi + (m_val - pr) / ((qr - pr) / (qi - pi))
 
-      Math.round(pi + (m_val - pr) / ((qr - pr) / (qi - pi))).toShort
+      round(r).toInt
     }
   }
 

@@ -39,7 +39,7 @@ trait Field
   def help                           : Unit
 
 
-  def toInt                          : Short
+  def toInt                          : Int
 }
 
 //****************************************************************************

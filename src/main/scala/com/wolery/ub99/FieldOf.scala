@@ -54,14 +54,19 @@ extends Field
     put(bytes,toInt)
   }
 
-  def put(bytes: Bytes,v: Short) =
+  def put(bytes: Bytes,v: Int) =
   {
     assert(code != -16)
+        println(this)
 
     if (code <= 0x0A)
     {
 //    assert(between(v,0,1<<15))
-      assert(between(v,0,0x7FFF))
+      if (!between(v,0,0x7FFF))
+      {
+        println("sss")
+      }
+      assert(between(v,0,0x7FFF),"between(v,0,0x7FFF)")
 
       val o = 32 + 2 * code
 
@@ -71,7 +76,13 @@ extends Field
     else
     {
 //    assert(v < (1<<8))
-      assert(between(v,0,0x007F))
+      if (!between(v,0,0x007F))
+      {
+        println(this)
+        println(name)
+        println(code)
+      }
+      assert(between(v,0,0x007F),"between(v,0,0x007F)")
 
       val o    = 43 + code
 
@@ -81,23 +92,23 @@ extends Field
 
   def get(bytes: Bytes): ℤ =
   {
-    assert(code != -16)
+    assert(code != -16,"not name field")
 
-    if (code <= 0x0A)                                    // Occupies 2 chars?
+    if (code <= 0x0A)
     {
-      val o = 32 + 2 * code                              // ...compute offset
+      val o = 32 + 2 * code
 
-      return bytes(o)<<7 | bytes(o + 1)                  // ...read, combine
+      bytes(o)<<7 | bytes(o + 1)
     }
-    else                                                 // No, one is enough
+    else
     {
       val o = 43 + code
 
-      return bytes(o)                                    // ...read the byte
+      bytes(o)
     }
   }
-
-  def offset: ℕ = if (code <= 0x0A) 32 + 2*code else 43 +code
+  override def toString: String = f"Field($name%-4s,$code,$m_val,$default)"
+//def offset: ℕ = if (code <= 0x0A) 32 + 2*code else 43 +code
 }
 
 //****************************************************************************

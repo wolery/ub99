@@ -55,7 +55,7 @@ final class Library
 
   def save(io: OutputStream) =
   {
-    val b = new Bytes(image_size)
+    val b = Array.fill[Byte](image_size)(0)
 
     "UB99 V1.00".getBytes.copyToArray(b,0x0000)
     "UB99 V1.00".getBytes.copyToArray(b,0x0040)

@@ -71,6 +71,7 @@ object Main
     {
       case e: Throwable ⇒                                // ...catch everything
       {
+        e.printStackTrace()
         println(e.getMessage)                            // ....display error
         exit(1)                                          // ....exit with code
       }

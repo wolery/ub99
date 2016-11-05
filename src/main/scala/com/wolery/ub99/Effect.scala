@@ -83,8 +83,8 @@ object Effect
   {
     val e = Effect("Amp")
     e("AMP" ).set("Solid")
-    e("GAIN").set(0.5)
-    e("MSTR").set(0.5)
+    e("GAIN").set(5.0)
+    e("MSTR").set(5.0)
     e
   }
 

@@ -25,7 +25,7 @@ object Fields
 // Linear Fields
 
   def newLinear (n: Name,c: Code,l: ℝ,s: ℝ,h: ℝ)     : Field = newLinear(n,c,l,s,h,l)
-  def newLinear (n: Name,c: Code,l: ℝ,s: ℝ,h: ℝ,d: ℝ): Field = newLinear(n,c,d,(0,l),(((h-l)/s).toInt,h))
+  def newLinear (n: Name,c: Code,l: ℝ,s: ℝ,h: ℝ,d: ℝ): Field = newLinear(n,c,d,(0,l),(  Math.round((h-l)/s).toInt  ,h))
 
   def newLevel  (n: Name,c: Code,d: ℝ = 0)        = newLinear(n,c,  0, 0.1,  10,d)
   def new1To8   (n: Name,c: Code,d: ℝ = 1)        = newLinear(n,c,  1, 1,     8,d)
@@ -197,6 +197,8 @@ object Fields
     def toInt                   = s.indexOf(m_val)
     def copy                    = newChoice(n,c,d,s:_*)
     def help                    = tabulate(replace(s,s"$default*",default))
+    override
+    def load(b: Bytes) =        {m_val = s(get(b))}
   }
 
   def newFreqcy(n: Name,c: Code,l: Hz,h: Hz,s: Hz,d: Hz): Field = new FieldOf[Hz](n,c,d)
@@ -204,11 +206,15 @@ object Fields
     def copy                    = newFreqcy(n,c,l,h,s,d)
     def help                    = println(s"A frequency between $l and $h [$default*]")
 
+      val m_phi: ℝ = log(h.Hz / l.Hz) / s.Hz
     def toInt =
     {
-      val m_phi: ℝ = log(h.Hz / l.Hz) / s.Hz
-
       round(log(m_val.Hz / l.Hz) / m_phi).toInt
+    }
+    override
+    def load(b: Bytes) =
+    {
+      m_val =  l.Hz * Math.exp(m_phi * get(b));
     }
   }
 
@@ -218,6 +224,21 @@ object Fields
 
     def copy                    = newLinear(n,c,d,p:_*)
     def help                    = println(s"A number between ${p(0)._2} and ${p(p.size-1)._2} [$default*]")
+
+    override
+    def load(b: Bytes) =
+    {
+      val v = get(b)
+      var i = 0
+      while (p(i+1)._1 < v)
+      {
+        i+=1;
+      }
+      val (pi,pr) = p(i)
+      val (qi,qr) = p(i+1)
+
+      m_val = pr + (v - pi) * ((qr - pr) / (qi - pi))
+    }
 
     def toInt =
     {

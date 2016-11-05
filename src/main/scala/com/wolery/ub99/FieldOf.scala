@@ -57,15 +57,9 @@ extends Field
   def put(bytes: Bytes,v: Int) =
   {
     assert(code != -16)
-        println(this)
 
     if (code <= 0x0A)
     {
-//    assert(between(v,0,1<<15))
-      if (!between(v,0,0x7FFF))
-      {
-        println("sss")
-      }
       assert(between(v,0,0x7FFF),"between(v,0,0x7FFF)")
 
       val o = 32 + 2 * code
@@ -75,13 +69,6 @@ extends Field
     }
     else
     {
-//    assert(v < (1<<8))
-      if (!between(v,0,0x007F))
-      {
-        println(this)
-        println(name)
-        println(code)
-      }
       assert(between(v,0,0x007F),"between(v,0,0x007F)")
 
       val o    = 43 + code

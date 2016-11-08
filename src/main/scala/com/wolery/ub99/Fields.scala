@@ -177,8 +177,8 @@ object Fields
 
     def save(bytes: Bytes)      = m_val match
     {
-      case "NONE"               => put(bytes,none)
-      case  _                   => put(bytes,m_eff(m_val).code)
+      case "NONE"               ⇒ put(bytes,none)
+      case  _                   ⇒ put(bytes,m_eff(m_val).code)
     }
 
     def copy                    = {val f = newKnob(n,c,d); f.set(m_eff); f}
@@ -212,33 +212,31 @@ object Fields
     def load(b: Bytes) =
     {
       val v = get(b)
-      var i = 0
 
-      while (outside(v,p(i)._1,p(i+1)._1))
-      {
-        i+=1;
-      }
+      val (i,r,slope) = bind(get(b),_._1)
 
-      val (pi,pr) = p(i)
-      val (qi,qr) = p(i+1)
-
-      m_val = pr + (v - pi) * ((qr - pr) / (qi - pi))
+      m_val = r + (v - i) * slope
     }
 
     def save(b: Bytes) =
     {
+      val (i,r,slope) = bind(m_val,_._2)
+
+      put(b,round(i + (m_val - r)/slope))
+    }
+
+    def bind(value: ℝ,f: Point ⇒ ℝ): (ℝ,ℝ,ℝ) =
+    {
       var i = 0
 
-      while (outside(m_val,p(i)._2,p(i+1)._2))
+      while (outside(value,f(p(i)),f(p(i+1))))
       {
-        i+=1
+        i += 1
       }
 
-      val (pi,pr) = p(i)
+      val (pi,pr) = p(i+0)
       val (qi,qr) = p(i+1)
-      val r = pi + (m_val - pr) / ((qr - pr) / (qi - pi))
-
-      put(b,round(r))
+      (pi,pr,(qr - pr) / (qi - pi))
     }
   }
 }

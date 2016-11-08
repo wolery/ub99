@@ -45,14 +45,7 @@ extends Field
   def set(name  : Name)             = {}
   def set(effect: Effect)           = {}
 
-  def load(bytes:  Bytes)           = {}
-
   def dump(writer: Writer)          = writer.append(s"$name:=$m_val")
-
-  def save(bytes: Bytes) =
-  {
-    put(bytes,toInt)
-  }
 
   def put(bytes: Bytes,v: Int) =
   {
@@ -60,7 +53,7 @@ extends Field
 
     if (code <= 0x0A)
     {
-      assert(between(v,0,0x7FFF),"between(v,0,0x7FFF)")
+      assert(between(v,0,0x7FFF))
 
       val o = 32 + 2 * code
 
@@ -69,7 +62,7 @@ extends Field
     }
     else
     {
-      assert(between(v,0,0x007F),"between(v,0,0x007F)")
+      assert(between(v,0,0x007F))
 
       val o    = 43 + code
 
@@ -79,7 +72,7 @@ extends Field
 
   def get(bytes: Bytes): ℤ =
   {
-    assert(code != -16,"not name field")
+    assert(code != -16)
 
     if (code <= 0x0A)
     {
@@ -94,8 +87,12 @@ extends Field
       bytes(o)
     }
   }
-  override def toString: String = f"Field($name%-4s,$code,$m_val,$default)"
-//def offset: ℕ = if (code <= 0x0A) 32 + 2*code else 43 +code
+
+  override
+  def toString: String =
+  {
+    f"Field($name%-4s,$code,$m_val,$default)"
+  }
 }
 
 //****************************************************************************

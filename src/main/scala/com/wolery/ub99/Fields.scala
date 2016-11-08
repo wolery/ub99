@@ -151,39 +151,34 @@ object Fields
   def newWavST  (n: Name,c: Code,d: ℕ = 0) /**/     = newChoice(n,c,d,"Sine","Triangle")
 
 // Field Implementations
-  import Math.{log}
 
   def newName(n: Name,c: Code,d: Name): Field = new FieldOf[String](n,c,d)
-  {def toInt = ???
-    override
-    def save(b: Bytes)          = m_val.getBytes.copyToArray(b,16)
-    override
-    def load(b: Bytes)          = m_val = substring(b,16,12)
-
-    override
-    def dump(w: Writer)         = w.append('"' + f"$m_val%-12s" + '"')
-
+  {
     def copy                    = newName(n,c,d)
     def help                    = println(s"A string of at most 12 characters")
+    def load(b: Bytes)          = m_val = substring(b,16,12)
+    def save(b: Bytes)          = m_val.getBytes.copyToArray(b,16)
+    override
+    def dump(w: Writer)         = w.append('"' + f"$m_val%-12s" + '"')
   }
 
   def newKnob(n: Name,c: Code,d: Name): Field = new FieldOf[String](n,c,d)
   {
-    var m_eff: Effect           = null;
+    var m_eff: Effect           = null
+
     override
     def set(e: Effect)          = {assert(m_eff==null && e!=null); m_eff = e}
 
-    override
     def load(b: Bytes)          = get(b) match
     {
       case code if code==none   ⇒ m_val = "NONE"
       case code                 ⇒ m_val = m_eff(code).name
     }
 
-    def toInt = m_val match
+    def save(bytes: Bytes)      = m_val match
     {
-      case "NONE" => none
-      case name   => m_eff(name).code
+      case "NONE"               => put(bytes,none)
+      case  _                   => put(bytes,m_eff(m_val).code)
     }
 
     def copy                    = {val f = newKnob(n,c,d); f.set(m_eff); f}
@@ -192,28 +187,19 @@ object Fields
 
   def newChoice(n: Name,c: Code,d: ℕ,s: String*): Field = new FieldOf[String](n,c,s(d))
   {
-    def toInt                   = s.indexOf(m_val)
     def copy                    = newChoice(n,c,d,s:_*)
     def help                    = tabulate(replace(s,s"$default*",default))
-    override
-    def load(b: Bytes) =        {m_val = s(get(b))}
+    def load(b: Bytes)          = {m_val = s(get(b))}
+    def save(b: Bytes)          = put(b,s.indexOf(m_val))
   }
 
   def newFreqcy(n: Name,c: Code,l: Hz,h: Hz,s: Hz,d: Hz): Field = new FieldOf[Hz](n,c,d)
   {
+    val m_phi: ℝ                = Math.log(h.Hz / l.Hz) / s.Hz
     def copy                    = newFreqcy(n,c,l,h,s,d)
     def help                    = println(s"A frequency between $l and $h [$default*]")
-
-      val m_phi: ℝ = log(h.Hz / l.Hz) / s.Hz
-    def toInt =
-    {
-      round(log(m_val.Hz / l.Hz) / m_phi)
-    }
-    override
-    def load(b: Bytes) =
-    {
-      m_val =  l.Hz * Math.exp(m_phi * get(b));
-    }
+    def load(b: Bytes)          = m_val = l.Hz * Math.exp(m_phi * get(b));
+    def save(b: Bytes)          = put(b,round(Math.log(m_val.Hz / l.Hz) / m_phi))
   }
 
   def newLinear(n: Name,c: Code,d: ℝ,p: Point*): Field = new FieldOf[ℝ](n,c,d)
@@ -223,7 +209,6 @@ object Fields
     def copy                    = newLinear(n,c,d,p:_*)
     def help                    = println(s"A number between ${p(0)._2} and ${p(p.size-1)._2} [$default*]")
 
-    override
     def load(b: Bytes) =
     {
       val v = get(b)
@@ -240,7 +225,7 @@ object Fields
       m_val = pr + (v - pi) * ((qr - pr) / (qi - pi))
     }
 
-    def toInt =
+    def save(b: Bytes) =
     {
       var i = 0
 
@@ -253,10 +238,9 @@ object Fields
       val (qi,qr) = p(i+1)
       val r = pi + (m_val - pr) / ((qr - pr) / (qi - pi))
 
-      round(r)
+      put(b,round(r))
     }
   }
-
 }
 
 //****************************************************************************

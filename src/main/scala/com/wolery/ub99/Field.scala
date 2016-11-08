@@ -24,22 +24,17 @@ trait Field
   def name                           : Name
   def code                           : Code
 
+  def help                           : Unit
+  def copy                           : Field
   def dirty                          : Boolean
 
   def load(bytes:  Bytes)            : Unit
   def save(bytes:  Bytes)            : Unit
   def dump(writer: Writer)           : Unit
 
-  def copy                           : Field
-
-  def set(real  : ℝ)                 : Unit
-  def set(name  : Name)              : Unit
+  def set(real:   ℝ)                 : Unit
+  def set(name:   Name)              : Unit
   def set(effect: Effect)            : Unit
-
-  def help                           : Unit
-
-
-  def toInt                          : Int
 }
 
 //****************************************************************************

@@ -81,6 +81,11 @@ object Utilities
   {
     Seq(add) ++ sequence.diff(remove)
   }
+
+  def outside(value: ℝ,a: ℝ,b:ℝ): Boolean =
+  {
+    a.compareTo(value) == -value.compareTo(b)
+  }
 }
 
 //****************************************************************************

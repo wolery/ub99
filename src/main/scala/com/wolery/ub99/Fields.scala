@@ -14,9 +14,7 @@
 
 package com.wolery.ub99
 
-import Utilities.substring
-import Utilities.tabulate
-import Utilities.replace
+import Utilities._
 
 //****************************************************************************
 
@@ -25,7 +23,7 @@ object Fields
 // Linear Fields
 
   def newLinear (n: Name,c: Code,l: ℝ,s: ℝ,h: ℝ)     : Field = newLinear(n,c,l,s,h,l)
-  def newLinear (n: Name,c: Code,l: ℝ,s: ℝ,h: ℝ,d: ℝ): Field = newLinear(n,c,d,(0,l),(  Math.round((h-l)/s).toInt  ,h))
+  def newLinear (n: Name,c: Code,l: ℝ,s: ℝ,h: ℝ,d: ℝ): Field = newLinear(n,c,d,(0,l),(round((h-l)/s),h))
 
   def newLevel  (n: Name,c: Code,d: ℝ = 0)        = newLinear(n,c,  0, 0.1,  10,d)
   def new1To8   (n: Name,c: Code,d: ℝ = 1)        = newLinear(n,c,  1, 1,     8,d)
@@ -153,7 +151,7 @@ object Fields
   def newWavST  (n: Name,c: Code,d: ℕ = 0) /**/     = newChoice(n,c,d,"Sine","Triangle")
 
 // Field Implementations
-  import Math.{log,round}
+  import Math.{log}
 
   def newName(n: Name,c: Code,d: Name): Field = new FieldOf[String](n,c,d)
   {def toInt = ???
@@ -209,7 +207,7 @@ object Fields
       val m_phi: ℝ = log(h.Hz / l.Hz) / s.Hz
     def toInt =
     {
-      round(log(m_val.Hz / l.Hz) / m_phi).toInt
+      round(log(m_val.Hz / l.Hz) / m_phi)
     }
     override
     def load(b: Bytes) =
@@ -230,10 +228,12 @@ object Fields
     {
       val v = get(b)
       var i = 0
-      while (p(i+1)._1 < v)
+
+      while (outside(v,p(i)._1,p(i+1)._1))
       {
         i+=1;
       }
+
       val (pi,pr) = p(i)
       val (qi,qr) = p(i+1)
 
@@ -244,7 +244,7 @@ object Fields
     {
       var i = 0
 
-      while (p(i+1)._2 < m_val)
+      while (outside(m_val,p(i)._2,p(i+1)._2))
       {
         i+=1
       }
@@ -253,7 +253,7 @@ object Fields
       val (qi,qr) = p(i+1)
       val r = pi + (m_val - pr) / ((qr - pr) / (qi - pi))
 
-      round(r).toInt
+      round(r)
     }
   }
 

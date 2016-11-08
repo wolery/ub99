@@ -1442,6 +1442,7 @@ object Effects
 /* Vintage flanger effect simulation,..*/
 
   Effect(0x30,"Flanger[Vintage]","SPD","DPTH","FB",      // VintageFlanger
+   newLevel  ("SPD", 0x00,1),                            // Flanger Speed
    newLinear ("TYPE",0x0B,1,1,3),                        // Flanger Type
    newLevel  ("DPTH",0x13,5),                            // Flanger Depth
    newLevel  ("MANU",0x14,5),                            // Flanger Delay
@@ -1478,6 +1479,7 @@ object Effects
 /* Three-band parametric equalizer,..*/
 
   Effect(0x33,"ParametricEQ","EQ1F","EQ1G","EQ1Q",       // 3BandParaEQ
+   newLevel  ("LEVL",0x00,10),                           // Effect Level
    newFreqcy ("EQ1F",0x08,20,20e3,255),                  // EQ Frequency [1]
    newFreqcy ("EQ2F",0x09,20,20e3,255),                  // EQ Frequency [2]
    newFreqcy ("EQ3F",0x0A,20,20e3,255),                  // EQ Frequency [3]

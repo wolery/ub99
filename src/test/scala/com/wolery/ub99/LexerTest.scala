@@ -121,7 +121,7 @@ class LexerTest extends FunSuite with TableDrivenPropertyChecks
 
   test("lex read.txt")
   {
-    val lex = new Lexer(new FileReader("src/test/resources/txt/read.txt"))
+    val lex = new Lexer(new FileReader("src/test/resources/txt/_read.txt"))
     var t   = lex()
 
     while (t.token != eof)

@@ -15,31 +15,37 @@
 package com.wolery.ub99
 
 import java.io.Reader
-import java.io.StringReader
+import Utilities._
 
 //****************************************************************************
 
-final class Parser(reader: Reader)
+object Parser extends Logging
 {
-  def apply() =
+  def parse(reader: Reader,effects: Array[Effect]): Unit =
   {
+    val m_lex: Lexer  = new Lexer(reader)
+    var m_tok: Token  = null
+    var m_eff: Effect = null
+    var m_slt: ℕ      = 1
+
     def parseStatement(): Unit = peek() match
     {
       case '#' ⇒ parseLine()
-      case 'S' ⇒ parseEffect();
-      case 'ℤ' ⇒ parseSlotOrCopy();
-      case  _  ⇒ bad_syntax("#Sℤ",m_tok)
+      case 'S' ⇒ parseEffect()
+      case 'ℤ' ⇒ parseSlotOrCopy()
+      case  _  ⇒ m_tok.badSyntax("#Sℤ")
     }
 
-    def parseSlotOrCopy(): Unit =
+    def parseLine(): Unit =
     {
-      val z = read("ℤ")
+      val l = {skip("#");read("S")}
 
-      read(":(").token match
+      if (l.lexeme != "line")
       {
-        case ':' ⇒ onSlot(z)
-        case '(' ⇒ onCopy(z);parseUpdates()
+        l.badSyntax("line")
       }
+
+      onLine(read("ℤ"),read("S"))
     }
 
     def parseEffect(): Unit =
@@ -49,16 +55,15 @@ final class Parser(reader: Reader)
       onEffect()
     }
 
-    def parseLine(): Unit =
+    def parseSlotOrCopy(): Unit =
     {
-      val l = {skip("#");read("S")}
+      val i = read("ℤ")
 
-      if (l.lexeme != "line")
+      peek() match
       {
-        bad_syntax("S",l)
+        case ':' ⇒ skip(":");onSlot(i)
+        case '(' ⇒ onCopy(i);parseUpdates();onEffect()
       }
-
-      onLine(read("ℤ"),read("S"))
     }
 
     def parseUpdates() =
@@ -83,14 +88,13 @@ final class Parser(reader: Reader)
     {
       val s = read("S")
 
-      if (peek() != '=')
+      if ("+-:".contains(peek()))
       {
-        onUpdate(Token('S',"NAME",s.line),s)
+        onUpdate(s,read("+-:"),read("ℤℝS"))
       }
       else
       {
-        read("=")
-        onUpdate(s,read("S"))
+        onUpdate(s.copy('S',"NAME"),s.copy(':',":="),s)
       }
     }
 
@@ -106,56 +110,125 @@ final class Parser(reader: Reader)
 
     def skip(want: String) =
     {
-      assert(want.contains(m_tok.token))
-
       if (m_tok == null)
       {
-        m_lex()
+        val t = m_lex()
+        assert(want.contains(t.token),s"want $want but got $t")
+        t
       }
       else
       {
+        assert(want.contains(m_tok.token))
         m_tok = null
       }
     }
 
     def read(want: String): Token =
     {
-      def check(got: Token): Token =
-      {
-        if (want.contains(got.token))
-          got
-        else
-          bad_syntax(want,got)
-      }
-
       if (m_tok == null)
       {
-        check(m_lex())
+        m_tok = m_lex()
       }
-      else
+
+      if (!want.contains(m_tok.token))
       {
-        val t = m_tok
-        m_tok = null
-        check(t)
+        m_tok.badSyntax(want)
       }
+
+      val t = m_tok
+      m_tok = null
+      t
     }
 
-    def onLine(l: Token,f: Token)    = print("#")
-    def onSlot(s: Token)             = print("S")
-    def onCopy(t: Token)             = print("C")
-    def onCreate(t: Token)           = print("T")
-    def onUpdate(f: Token,v: Token)  = print("f = v")
-    def onEffect()                   = print("E")
+////
 
-    def fail(message: String)      = throw new Error(s"PATH($m_lex.m_line) : " + message)
-    def bad_syntax(w: String,g: Token)= fail(s"syntax error: wnated $w but got $g.")
-    def bad_end_of_file  (line: ℕ) = fail(s"there is a syntax error at the end of the file.")
-    def bad_explicit_slot(line: ℕ) = fail(s"'%0' is not a library slot; try a whole number between 1 and 99.")
-    def bad_implicit_slot(line: ℕ) = fail(s"the library is full; try storing '%0' in another library slot.")
-    def bad_effect_type  (line: ℕ) = fail(s"'%0' is not an effect; try %2.")
-    def bad_field_name   (line: ℕ) = fail(s"'%0' is not a field of %2; try %3.")
-    def bad_field_value  (line: ℕ) = fail(s"'%1' is not a legal value for %3.%0; try %2.")
-    def bad_field_update (line: ℕ) = fail(s"the field '%0' can only be updated using the ':=' operator.")
+    def onLine(line: Token,file: Token): Unit =
+    {
+      m_lex.setLine(line.integer,file.string)
+
+      log.debug(s"#line ${line.lexeme} '${file.lexeme}'\n")
+    }
+
+    def onSlot(slot: Token): Unit =
+    {
+      m_slt = slot.integer
+
+      if (outside(m_slt,1,99))
+      {
+        m_tok.badExplicitSlot()
+      }
+
+      log.debug(s"${slot.lexeme}: ")
+    }
+
+    def onCopy(slot: Token): Unit =
+    {
+      val s = slot.integer
+
+      if (Utilities.outside(s,1,99))
+      {
+        m_tok.badExplicitSlot()
+      }
+
+      val e: Effect = effects(s).copy
+
+      log.debug(s"${slot.lexeme}(")
+    }
+
+    def onCreate(kind: Token): Unit =
+    {
+      m_eff = Effect(kind.name)
+
+      log.debug(s"${kind.lexeme}(")
+    }
+
+    def onUpdate(field: Token,update: Token,value:Token): Unit =
+    {
+
+      try
+      {
+        val f = m_eff(field.name)
+
+
+      (update.token,value.token) match
+      {
+        case(':','S') ⇒ foo(f.overwrite(value.name))
+        case(':', _ ) ⇒ foo(f.overwrite(value.real))
+        case('+', _ ) ⇒ foo(f.increment(value.real))
+        case('-', _ ) ⇒ foo(f.decrement(value.real))
+        case( _ ,'S') ⇒ m_tok.badSyntax("ℤℝ")
+        case( _ , _ ) ⇒ m_tok.badSyntax("ℤℝ")
+       }
+
+        def foo(action: ⇒ Boolean) =
+        {
+          if (!action)
+          {
+              // error
+          }
+        }
+
+
+      }
+      catch
+      {
+        case _: Exception => field.badFieldName(m_eff)
+      }
+
+      log.debug(f"${field.lexeme}%-4s${update.lexeme}${value.lexeme},")
+    }
+
+    def onEffect(): Unit =
+    {
+      if (outside(m_slt,1,99))
+      {
+        m_tok.badImplicitSlot()
+      }
+
+      effects(m_slt) = m_eff
+      m_slt += 1
+      log.debug(s")\n")
+    }
 
     while (peek() != '∅')
     {
@@ -163,19 +236,6 @@ final class Parser(reader: Reader)
     }
   }
 
-  var m_slt: ℤ          = 1
-  var m_tok: Token      = null
-  var m_eff: Effect     = null
-  val m_lib: Library    = null
-  val m_lex: Lexer      = new Lexer(reader)
-}
-
-//****************************************************************************
-
-object Parser
-{
-  def apply(r: Reader) = new Parser(r)
-  def apply(s: String) = new Parser(new StringReader(s))
 }
 
 //****************************************************************************

@@ -14,32 +14,35 @@
 
 package com.wolery.ub99
 
-import java.io.InputStream
-import java.io.OutputStream
+import java.io._
+
 import Utilities._
 
 //****************************************************************************
 
-final class Library
+final class Library extends Errors with Logging
 {
-  def load(io: InputStream) =
+  def format(message: String): String = message
+
+  def load(path: String): Unit =
   {
+    val io = new FileInputStream(path)
     val b = new Bytes(image_size)
     val n = io.read(b)
 
     if (n == 0)
     {
-      bad_load_path()
+      badLoadPath(path)
     }
 
     if (n != b.length)
     {
-      bad_load_format()
+      badLoadFormat(path)
     }
 
-    if (substring(b,0,10).compareTo("UB99 V1.00") != 0)
+    if (substring(b,0,10).compareTo(image_magic) != 0)
     {
-      bad_load_format()
+      badLoadFormat(path)
     }
 
     var i = 0
@@ -53,12 +56,13 @@ final class Library
     }
   }
 
-  def save(io: OutputStream) =
+  def save(path: String): Unit =
   {
+    val io = new FileOutputStream(path)
     val b = Array.fill[Byte](image_size)(0)
 
-    "UB99 V1.00".getBytes.copyToArray(b,0x0000)
-    "UB99 V1.00".getBytes.copyToArray(b,0x0040)
+    image_magic.getBytes.copyToArray(b,0x0000)
+    image_magic.getBytes.copyToArray(b,0x0040)
 
     for (i ← 0 until library_size)
     {
@@ -73,10 +77,14 @@ final class Library
     val n = io.write(b)
   }
 
-  def read(i: InputStream) = {}
-
-  def dump(io: Writer) =
+  def read(path: String): Unit =
   {
+    Parser.parse(new FileReader(path),m_slot)
+  }
+
+  def dump(path: String): Unit =
+  {
+    val io = new FileWriter(path)
     val break = "//" + "*" * 76 + '\n'
 
     io.append(break + '\n')
@@ -92,23 +100,7 @@ final class Library
     io.flush()
   }
 
-  def bad_load_path()     = error("cannot open patch library 'PATH'.")
-  def bad_load_format()   = error("cannot load 'PATH'; the file is not a patch library.")
-  def bad_edit_path()     = error("cannot open patch text file 'PATH'.")
-  def bad_dump_path()     = error("cannot dump patch text file to 'PATH'.")
-  def bad_save_path()     = error("cannot save patch library to 'PATH'.")
-
-  def get(slot: Slot) : Effect     = ???
-  def set(slot: Slot,e: Effect)    = ???
-
-  val library_size      = 99          // ...number of patches per library
-  val m_slot: Array[Effect]       = Array.fill[Effect](library_size)(Effect())
-
-  val name_table  = 0x0080
-  val image_size  = 0x4400
-  val image_magic = "UB99 V1.00"
-  val header_size = 0x0600
-  val effect_size = 0x009F
+  val m_slot: Array[Effect] = Array.fill(library_size)(Effect())
 }
 
 //****************************************************************************

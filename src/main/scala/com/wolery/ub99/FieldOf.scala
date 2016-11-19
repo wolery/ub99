@@ -14,7 +14,7 @@
 
 package com.wolery.ub99
 
-import Utilities.between
+import Utilities.inside
 
 /**
  * Partially implements the abstract Field interface.
@@ -34,15 +34,18 @@ abstract class FieldOf[Value]
 )
 extends Field
 {
-  require(between(name.length,1,4))
-  require(between(code,-16,none))
+  require(inside(name.length,1,4))
+  require(inside(code,-16,none))
 
   var m_val: Value                  = default
 
   def dirty: Boolean                = m_val != default
 
-  def set(real  : ℝ)                = {}
-  def set(name  : Name)             = {}
+  def increment(value: ℝ)           = false
+  def decrement(value: ℝ)           = false
+  def overwrite(value: ℝ)           = false
+  def overwrite(value: Name)        = false
+
   def set(effect: Effect)           = {}
 
   def dump(writer: Writer)          = writer.append(s"$name:=$m_val")
@@ -53,7 +56,7 @@ extends Field
 
     if (code <= 0x0A)
     {
-      assert(between(v,0,0x7FFF))
+      assert(inside(v,0,0x7FFF))
 
       val o = 32 + 2 * code
 
@@ -62,7 +65,7 @@ extends Field
     }
     else
     {
-      assert(between(v,0,0x007F))
+      assert(inside(v,0,0x007F))
 
       val o    = 43 + code
 

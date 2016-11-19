@@ -32,8 +32,11 @@ trait Field
   def save(bytes:  Bytes)            : Unit
   def dump(writer: Writer)           : Unit
 
-  def set(real:   ℝ)                 : Unit
-  def set(name:   Name)              : Unit
+  def increment(value: ℝ)            : Boolean
+  def decrement(value: ℝ)            : Boolean
+  def overwrite(value: ℝ)            : Boolean
+  def overwrite(value: Name)         : Boolean
+
   def set(effect: Effect)            : Unit
 }
 

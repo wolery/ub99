@@ -82,9 +82,9 @@ object Effect
   def apply(): Effect =
   {
     val e = Effect("Amp")
-    e("AMP" ).set("Solid")
-    e("GAIN").set(5.0)
-    e("MSTR").set(5.0)
+    e("AMP" ).overwrite("Solid")
+    e("GAIN").overwrite(5.0)
+    e("MSTR").overwrite(5.0)
     e
   }
 
@@ -109,7 +109,7 @@ object Effect
 
   def apply(kind: Kind,name: Name,k1: Name,k2: Name,k3: Name,fs: Field*): Effect =
   {
-    val k = Seq(newName("NAME",-16,"            "),
+    val k = Seq(newName("NAME",-16," " * name_size),
                 newKnob("KNB1",-15,k1),
                 newKnob("KNB2",-14,k2),
                 newKnob("KNB3",-13,k3))

@@ -25,24 +25,24 @@ object Fields
   def newLinear (n: Name,c: Code,l: ℝ,s: ℝ,h: ℝ)     : Field = newLinear(n,c,l,s,h,l)
   def newLinear (n: Name,c: Code,l: ℝ,s: ℝ,h: ℝ,d: ℝ): Field = newLinear(n,c,d,(0,l),(round((h-l)/s),h))
 
-  def newLevel  (n: Name,c: Code,d: ℝ = 0)        = newLinear(n,c,  0, 0.1,  10,d)
-  def new1To8   (n: Name,c: Code,d: ℝ = 1)        = newLinear(n,c,  1, 1,     8,d)
-  def new0To10  (n: Name,c: Code,d: ℝ = 0)        = newLinear(n,c,  0, 1,    10,d)
-  def new0To20  (n: Name,c: Code,d: ℝ = 0)        = newLinear(n,c,  0, 1,    20,d)
-  def new0To100 (n: Name,c: Code,d: ℝ = 0)        = newLinear(n,c,  0, 1,   100,d)
-  def newEQGain (n: Name,c: Code,d: ℝ = 0)        = newLinear(n,c, -12,0.2, +12,d)
-  def newSHGain (n: Name,c: Code,d: ℝ = 0)        = newLinear(n,c, -12,0.5, +12,d)
-  def newFBGain (n: Name,c: Code,d: ℝ = 0)        = newLinear(n,c, -99,1,   +99,d)
-  def newFBGain2(n: Name,c: Code,d: ℝ = 0)        = newLinear(n,c,-100,2,  +100,d)
-  def newIniDlay(n: Name,c: Code,d: ℝ = 0)        = newLinear(n,c,   0,0.1, 500,d)
-  def newModDlay(n: Name,c: Code,d: ℝ = 0)        = newLinear(n,c,   0,0.1, 500,d)
-  def newPan    (n: Name,c: Code,d: ℝ = 0)        = newLinear(n,c,- 10,0.2, +10,d)
-  def newHiRatio(n: Name,c: Code,d: ℝ = 1)        = newLinear(n,c,0.1,0.1,  1.0,d)
-  def newLoRatio(n: Name,c: Code,d: ℝ = 1)        = newLinear(n,c,0.1,0.1,  2.4,d)
-  def newModFreq(n: Name,c: Code,d: ℝ = 2)        = newLinear(n,c,0.05,0.05, 40,d)
-  def newAttGate(n: Name,c: Code,d: ℝ = 4)        = newLinear(n,c,0,1,      120,d)
+  def newLevel  (n: Name,c: Code,d: ℝ = 0) = newLinear(n,c,  0, 0.1,  10,d)
+  def new1To8   (n: Name,c: Code,d: ℝ = 1) = newLinear(n,c,  1, 1,     8,d)
+  def new0To10  (n: Name,c: Code,d: ℝ = 0) = newLinear(n,c,  0, 1,    10,d)
+  def new0To20  (n: Name,c: Code,d: ℝ = 0) = newLinear(n,c,  0, 1,    20,d)
+  def new0To100 (n: Name,c: Code,d: ℝ = 0) = newLinear(n,c,  0, 1,   100,d)
+  def newEQGain (n: Name,c: Code,d: ℝ = 0) = newLinear(n,c, -12,0.2, +12,d)
+  def newSHGain (n: Name,c: Code,d: ℝ = 0) = newLinear(n,c, -12,0.5, +12,d)
+  def newFBGain (n: Name,c: Code,d: ℝ = 0) = newLinear(n,c, -99,1,   +99,d)
+  def newFBGain2(n: Name,c: Code,d: ℝ = 0) = newLinear(n,c,-100,2,  +100,d)
+  def newIniDlay(n: Name,c: Code,d: ℝ = 0) = newLinear(n,c,   0,0.1, 500,d)
+  def newModDlay(n: Name,c: Code,d: ℝ = 0) = newLinear(n,c,   0,0.1, 500,d)
+  def newPan    (n: Name,c: Code,d: ℝ = 0) = newLinear(n,c,- 10,0.2, +10,d)
+  def newHiRatio(n: Name,c: Code,d: ℝ = 1) = newLinear(n,c,0.1,0.1,  1.0,d)
+  def newLoRatio(n: Name,c: Code,d: ℝ = 1) = newLinear(n,c,0.1,0.1,  2.4,d)
+  def newModFreq(n: Name,c: Code,d: ℝ = 2) = newLinear(n,c,0.05,0.05, 40,d)
+  def newAttGate(n: Name,c: Code,d: ℝ = 4) = newLinear(n,c,0,1,      120,d)
 
-  def newRatio  (n: Name,c: Code,d: ℝ = 1)        = newLinear(n,c,d,
+  def newRatio  (n: Name,c: Code,d: ℝ = 1) = newLinear(n,c,d,
       (0x00,  1.0),
       (0x01,  1.1),
     //(0x02,  1.3),
@@ -61,7 +61,7 @@ object Fields
       (0x0F,100.0),
       (0x10,Double.MaxValue))
 
-  def newHldGate(n: Name,c: Code,d: ℝ = 150)      = newLinear(n,c,d,
+  def newHldGate(n: Name,c: Code,d: ℝ = 150) = newLinear(n,c,d,
       (0,  0.020000),
       (8,  0.382212),
       (16, 0.744425),
@@ -78,7 +78,7 @@ object Fields
       (104,1483.640),
       (107,2040.000))
 
-  def newDcyGate(n: Name,c: Code,d: ℝ = 41)       = newLinear(n,c,d,
+  def newDcyGate(n: Name,c: Code,d: ℝ = 41) = newLinear(n,c,d,
       (0, 6.00000),
       (8, 98.6958),
       (16,191.392),
@@ -91,7 +91,7 @@ object Fields
       (72,23736.1),
       (79,44.50e3))
 
-  def newDcyTime(n: Name,c: Code,d: ℝ = 70)       = newLinear(n,c,d,
+  def newDcyTime(n: Name,c: Code,d: ℝ = 70)  = newLinear(n,c,d,
       (0,6),
       (16,15.2621),
       (32,24.5242),
@@ -104,7 +104,7 @@ object Fields
       (144,2377.1),
       (159,46000.0))
 
-  def newRelTime(n: Name,c: Code,d: ℝ = 261)      = newLinear(n,c,d,
+  def newRelTime(n: Name,c: Code,d: ℝ = 261) = newLinear(n,c,d,
       (0,6),
       (16,98.6935),
       (32,191.387),
@@ -115,7 +115,7 @@ object Fields
       (112,5938.39),
       (127,11500))
 
-  def newRevTime(n: Name,c: Code,d: ℝ = 4.7)      = newLinear(n,c,d,
+  def newRevTime(n: Name,c: Code,d: ℝ = 4.7) = newLinear(n,c,d,
       (0x00,  0.3),
       (0x2F,  5.0),
       (0x39, 10.0),
@@ -155,7 +155,7 @@ object Fields
   def newName(n: Name,c: Code,d: Name): Field = new FieldOf[String](n,c,d)
   {
     def copy                    = newName(n,c,d)
-    def help                    = println(s"A string of at most 12 characters")
+    def help                    = println("A string of at most 12 characters")
     def load(b: Bytes)          = m_val = substring(b,16,12)
     def save(b: Bytes)          = m_val.getBytes.copyToArray(b,16)
     override

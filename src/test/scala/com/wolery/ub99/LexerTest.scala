@@ -124,7 +124,7 @@ class LexerTest extends FunSuite with TableDrivenPropertyChecks
     val lex = new Lexer(new FileReader("src/test/resources/txt/_read.txt"))
     var t   = lex()
 
-    while (t.token != eof)
+    while (t.token != '∅')
     {
       t.token match
       {

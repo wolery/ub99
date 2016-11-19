@@ -14,29 +14,24 @@
 
 package com.wolery.ub99
 
-import java.io.Reader
-import java.io.PushbackReader
+import java.io.{PushbackReader,Reader}
 
 //****************************************************************************
 
-case class Token (token: Char,lexeme: String,line: ℕ)
-
-//****************************************************************************
-
-final class Lexer (reader: Reader)
+final class Lexer (reader: Reader) extends Errors with Logging
 {
   def apply(): Token =
   {
     def onColon()                   = read() match
     {
-      case '='                      ⇒ push('=');onToken('=')
-      case  c                       ⇒ unread(c);onToken(':')
+      case '='                      ⇒ push(':','=');onToken(':')
+      case  c                       ⇒ unread(c)    ;onToken(':')
     }
 
     def onSign(s: Char)             = read() match
     {
-      case '='                      ⇒ push(s);onToken('=')
-      case c if c.isDigit           ⇒ push(s);onDigit(c)
+      case '='                      ⇒ push(s,'=');onToken(s)
+      case c if c.isDigit           ⇒ push(s)    ;onDigit(c)
       case c                        ⇒ badLexeme(s"$s$c")
     }
 
@@ -44,13 +39,13 @@ final class Lexer (reader: Reader)
     {
       def eol(): Unit               = read() match
       {
-        case '\uFFFF' | '\n'        ⇒
+        case '∅' | '\n'             ⇒
         case  _                     ⇒ eol()
       }
 
       def eob(): Unit               = read() match
       {
-        case '\uFFFF'               ⇒ badComment
+        case '∅'                    ⇒ badComment()
         case '*'                    ⇒ eoc()
         case  _                     ⇒ eob()
       }
@@ -73,7 +68,7 @@ final class Lexer (reader: Reader)
     {
       def eos(): Unit               = read() match
       {
-        case '\uFFFF' | '\n'        ⇒ badString
+        case '\n' | '∅'             ⇒ badString()
         case '"'                    ⇒ space()
         case c                      ⇒ push(c);eos()
       }
@@ -94,7 +89,7 @@ final class Lexer (reader: Reader)
       onToken('S')
     }
 
-    def onUpper(c: Char) =
+    def onAlpha(c: Char) =
     {
       def more(): Unit              = read() match
       {
@@ -114,7 +109,7 @@ final class Lexer (reader: Reader)
 
       def eod(): Unit               = read() match
       {
-        case c if c.isDigit         ⇒ push(c);         ;eod()
+        case c if c.isDigit         ⇒ push(c)  ;       ;eod()
         case '.'                    ⇒ push('.');t = 'ℝ';eom()
         case 'e' | 'E'              ⇒ push('e');t = 'ℝ';eos()
         case c                      ⇒ unread(c);
@@ -122,7 +117,7 @@ final class Lexer (reader: Reader)
 
       def eom(): Unit               = read() match
       {
-        case c if c.isDigit         ⇒ push(c);  eom()
+        case c if c.isDigit         ⇒ push(c)  ;eom()
         case 'e' | 'E'              ⇒ push('e');eos()
         case c                      ⇒ unread(c)
       }
@@ -149,11 +144,11 @@ final class Lexer (reader: Reader)
 
     def onToken(token: Char): Token =
     {
-      val l = m_buff.toString;
+      val s = m_buff.toString;
 
       m_buff.setLength(0)
 
-      Token(token,l,m_line)
+      Token(token,s,m_line,m_file)
     }
 
 //****************************************************************************
@@ -161,36 +156,29 @@ final class Lexer (reader: Reader)
     def read(): Char            = m_read.read().toChar match
     {
       case '\n'                 ⇒ m_line += 1; '\n'
+      case '\uFFFF'             ⇒              '∅'
       case  c                   ⇒               c
     }
 
-    def unread(c: Char)         = c match
+    def unread(c: Char) =
     {
-      case '\n'                 ⇒ m_line -= 1;m_read.unread(c)
-      case  _                   ⇒             m_read.unread(c)
-    }
-
-    def lexeme: String          = m_buff.toString
-
-    def push(c: Char) =
-    {
-      if (m_buff.length > longest_lexeme)
+      if (c == '\n')
       {
-        badLength
+        m_line -= 1
       }
 
-      m_buff.append(c)
+      m_read.unread(c)
     }
 
-//****************************************************************************
+    def push(characters: Char*) =
+    {
+      if (m_buff.length + characters.size > longest_lexeme)
+      {
+        badLength()
+      }
 
-    def fail(message: String)   = throw new Error(s"PATH($m_line) : " + message)
-    def badLength()             = fail(s"the string beginning '$lexeme...' is too long.")
-    def badString()             = fail(s"the string beginning '$lexeme...' is missing a closing quote.")
-    def badComment()            = fail(s"the '/*' comment is not terminated with a matching '*/'.")
-    def badLexeme(s: String)    = fail(s"bad lexeme '$s'.")
-    def badChar(c: Char)        = fail(s"bad lexeme '$c'.")
-    def badByte(c: Char)        = fail(s"the file contains an illegal character '$c' (${c.toByte}).")
+      characters.foreach{m_buff.append(_)}
+    }
 
 //****************************************************************************
 
@@ -198,21 +186,33 @@ final class Lexer (reader: Reader)
 
     c match
     {
-      case '\uFFFF'             ⇒ onToken(c)
-      case '(' | ',' | '#' | ')'⇒ onToken(c)
+      case '('|','|'#'|')'|'∅'  ⇒ onToken(c)
       case ':'                  ⇒ onColon( )
       case '/'                  ⇒ onSlash( )
       case '"'                  ⇒ onQuote( )
       case '+' | '-'            ⇒ onSign (c)
       case c if c.isDigit       ⇒ onDigit(c)
-      case c if c.isUpper       ⇒ onUpper(c)
+      case c if c.isLetter      ⇒ onAlpha(c)
       case c if c.isWhitespace  ⇒ onWhite( )
       case c if 32>=c && c<=127 ⇒ badChar(c)
       case c                    ⇒ badByte(c)
     }
   }
 
+  def setLine(line: ℕ,file: String) =
+  {
+    require(line>0 && file!=null)
+    m_line = line
+    m_file = file
+  }
+
+  def format(message: String): String =
+  {
+    s"$m_file($m_line) : " + message.replaceAll("LEXEME",m_buff.toString)
+  }
+
   var m_line: ℕ                 = 1
+  var m_file: String            = "stdin"
   val m_buff: StringBuffer      = new StringBuffer(longest_lexeme)
   val m_read: PushbackReader    = new PushbackReader(reader)
 }

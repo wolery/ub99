@@ -62,10 +62,25 @@ object Main
         all_fields = true                                // ...set global flag
       }
 
-      onPath(c,'l',p ⇒ l.load(new FileInputStream (p)))// ...load library
-      onPath(c,'r',p ⇒ l.read(new FileInputStream (p)))// ...read text file
-      onPath(c,'d',p ⇒ l.dump(new PrintWriter     (p)))// ...dump text file
-      onPath(c,'s',p ⇒ l.save(new FileOutputStream(p)))// ...save library
+      if (c.hasOption('l'))
+      {
+        l.load(c.getOptionValue('l'))
+      }
+
+      if (c.hasOption('r'))
+      {
+        l.read(c.getOptionValue('r'))
+      }
+
+      if (c.hasOption('d'))
+      {
+        l.dump(c.getOptionValue('d'))
+      }
+
+      if (c.hasOption('s'))
+      {
+        l.save(c.getOptionValue('s'))
+      }
     }
     catch                                                // Operation failed
     {
@@ -134,33 +149,6 @@ object Main
     catch                                                // No such effect
     {
       case _: NoSuchElementException ⇒ Effects.help      // ...list all effects
-    }
-  }
-
-  /**
-   * Test the command line for an option that takes a required 'path' argument
-   * and if present apply the given function to its path. If the action fails,
-   * then fix up the error message to include the path that caused the problem
-   * and re-throw the exception.
-   *
-   * @param cl      the parsed command line
-   * @param option  an option that requires a path argument
-   * @param action  an action to apply to the option's path
-   */
-  def onPath(cl: CommandLine,option: Char,action: String⇒Unit) =
-  {
-    if (cl.hasOption(option))                            // Option specified?
-    {
-      val p = cl.getOptionValue(option)                  // ...path argument
-
-      try                                                // ...action may fail
-      {
-        action(p)                                        // ....perform action
-      }
-      catch                                              // ...action failed?
-      {
-        case e: Error ⇒ e.patchAndRethrow(p)             // ....fix up message
-      }
     }
   }
 

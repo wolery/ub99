@@ -14,6 +14,9 @@
 
 package com.wolery.ub99
 
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+
 /**
  * Miscellaneous utility functions.
  *
@@ -29,6 +32,16 @@ object Utilities
    * @return
    */
   def round(real: ℝ): Int = (real + 0.5).toInt
+
+  def inside(value: ℝ,lo: ℝ,hi:ℝ): Boolean =
+  {
+    lo.compareTo(value) != -value.compareTo(hi)
+  }
+
+  def outside(value: ℝ,lo: ℝ,hi:ℝ): Boolean =
+  {
+    lo.compareTo(value) == -value.compareTo(hi)
+  }
 
   /**
    *
@@ -72,20 +85,11 @@ object Utilities
       f"${frequency}%.2fHz"
   }
 
-  def between(value: Int,lo: Int,hi:Int): Boolean =
-  {
-    lo<=value && value <= hi
-  }
-
   def replace[T](sequence: Seq[T],add: T,remove: T*): Seq[T] =
   {
     Seq(add) ++ sequence.diff(remove)
   }
 
-  def outside(value: ℝ,a: ℝ,b:ℝ): Boolean =
-  {
-    a.compareTo(value) == -value.compareTo(b)
-  }
 }
 
 //****************************************************************************

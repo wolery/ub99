@@ -14,14 +14,15 @@
 
 package com.wolery.ub99
 
+import org.slf4j.{Logger,LoggerFactory}
+
 //****************************************************************************
 
-class Error (message: String) extends Exception(message)
+trait Logging
 {
-  def patchAndRethrow(path: String) =
-  {
-    throw new Exception(message.replaceAll("PATH",path))
-  }
+  def logName: String  = this.getClass.getName.stripSuffix("$")
+
+  lazy val log: Logger = LoggerFactory.getLogger(logName)
 }
 
 //****************************************************************************

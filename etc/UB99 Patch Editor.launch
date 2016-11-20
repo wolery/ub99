@@ -17,6 +17,6 @@
 </listAttribute>
 <booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_START_ON_FIRST_THREAD" value="true"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="com.wolery.ub99.Main"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-l src/test/resources/ub9/jb.ub9&#10;-s src/test/resources/ub9/jb.ub9.tmp"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="${string_prompt:the command line arguments:-r x.txt -d y.txt -a}"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="ub99"/>
 </launchConfiguration>

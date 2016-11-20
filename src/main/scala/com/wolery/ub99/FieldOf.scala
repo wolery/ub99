@@ -92,6 +92,18 @@ extends Field
   }
 
   override
+  def equals(any: Any): Boolean = any match
+  {
+    case that: FieldOf[Value] ⇒
+    {
+      this.code  == that.code &&
+//    this.name  == that.name &&
+      this.m_val == that.m_val
+    }
+    case _ ⇒ false
+  }
+
+  override
   def toString: String =
   {
     f"Field($name%-4s,$code,$m_val,$default)"

@@ -59,5 +59,6 @@ trait Errors
   def badDumpPath  (p: String) = fail(s"cannot dump patch text file to '$p'.")
   def badSavePath  (p: String) = fail(s"cannot save patch library to '$p'.")
 }
+
 //****************************************************************************
 

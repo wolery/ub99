@@ -32,7 +32,7 @@ case class Token (token: Char,lexeme: String,line: ℕ,file: String = "stdin") e
 
   def format(message: String): String =
   {
-    s"$file($line) : $message"
+    s"$file($line) : ${message.replaceAll("LEXEME",lexeme)}"
   }
 }
 

@@ -40,6 +40,14 @@ package object ub99
   val effect_size       = 0x009F      // ...number of bytes per patch block
   val header_size       = 0x0600      // ...number of bytes per file header
   val name_table        = 0x0080
+
+  val line_break        = "//" + "*" * 76 + '\n'
+
+  /**
+   * Indicates whether or not to include every field value in an effect dump,
+   * even those fields whose values have not changed from their default value.
+   */
+  var all_fields: Boolean = false                        // All field values?
 }
 
 //****************************************************************************

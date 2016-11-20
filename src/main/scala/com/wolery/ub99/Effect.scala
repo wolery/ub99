@@ -24,7 +24,7 @@ import Utilities.{tabulate,replace}
 
 //****************************************************************************
 
-class Effect (val kind: Kind,val name: Name,val fields: Seq[Field])
+case class Effect (kind: Kind,name: Name,fields: Seq[Field])
 {
   val m_name: Map[Name,Field]    = TreeMap(fields.map(f ⇒ f.name.toUpperCase→f):_*)
   val m_code: Map[Code,Field]    = TreeMap(fields.map(f ⇒ f.code→f):_*)
@@ -51,7 +51,7 @@ class Effect (val kind: Kind,val name: Name,val fields: Seq[Field])
 
     for (f ← fields)
     {
-      if (f.dirty || Main.all_fields)
+      if (f.dirty || all_fields)
       {
         if (first)
         {
@@ -73,19 +73,27 @@ class Effect (val kind: Kind,val name: Name,val fields: Seq[Field])
   {
     new Effect(kind,name,fields.map(f ⇒ f.copy))
   }
+
+  override
+  def toString: String = name
 }
 
 //****************************************************************************
 
 object Effect
 {
-  def apply(): Effect =
+  val default =
   {
     val e = Effect("Amp")
-    e("AMP" ).overwrite("Solid")
-    e("GAIN").overwrite(5.0)
-    e("MSTR").overwrite(5.0)
+//  e("AMP" ).overwrite("Solid")
+//  e("GAIN").overwrite(5.0)
+//  e("MSTR").overwrite(5.0)
     e
+  }
+
+  def apply(): Effect =
+  {
+    default.copy
   }
 
   def apply(name: Name): Effect =

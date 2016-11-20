@@ -160,6 +160,9 @@ object Fields
     def save(b: Bytes)          = m_val.getBytes.copyToArray(b,16)
     override
     def dump(w: Writer)         = w.append('"' + f"$m_val%-12s" + '"')
+
+    override
+    def overwrite(s: String)    = s.length<=12 && {m_val=s;true}
   }
 
   def newKnob(n: Name,c: Code,d: Name): Field = new FieldOf[String](n,c,d)
@@ -200,6 +203,13 @@ object Fields
     def help                    = println(s"A frequency between $l and $h [$default*]")
     def load(b: Bytes)          = m_val = l.Hz * Math.exp(m_phi * get(b));
     def save(b: Bytes)          = put(b,round(Math.log(m_val.Hz / l.Hz) / m_phi))
+
+    override
+    def overwrite(r: Double)    = inside(r,l.Hz,h.Hz) && {m_val=r;true}
+    override
+    def increment(v: ℝ)         = overwrite(m_val.Hz+v)
+    override
+    def decrement(v: ℝ)         = overwrite(m_val.Hz-v)
   }
 
   def newLinear(n: Name,c: Code,d: ℝ,p: Point*): Field = new FieldOf[ℝ](n,c,d)
@@ -207,7 +217,14 @@ object Fields
     assert(p.size >= 2)
 
     def copy                    = newLinear(n,c,d,p:_*)
-    def help                    = println(s"A number between ${p(0)._2} and ${p(p.size-1)._2} [$default*]")
+    def help                    = println(s"A number between ${p(0)._2} and ${p.last._2} [$default*]")
+
+    override
+    def overwrite(v: ℝ)         = inside(v,p(0)._2,p.last._2) && {m_val=v;true}
+    override
+    def increment(v: ℝ)         = overwrite(m_val+v)
+    override
+    def decrement(v: ℝ)         = overwrite(m_val-v)
 
     def load(b: Bytes) =
     {

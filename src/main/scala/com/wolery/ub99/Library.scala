@@ -59,7 +59,7 @@ final class Library extends Errors with Logging
   def save(path: String): Unit =
   {
     val io = new FileOutputStream(path)
-    val b = Array.fill[Byte](image_size)(0)
+    val b  = new Bytes(image_size)
 
     image_magic.getBytes.copyToArray(b,0x0000)
     image_magic.getBytes.copyToArray(b,0x0040)
@@ -79,25 +79,26 @@ final class Library extends Errors with Logging
 
   def read(path: String): Unit =
   {
-    Parser.parse(new FileReader(path),m_slot)
+    val r = new FileReader(path)
+
+    Parser.parse(r,m_slot)
   }
 
   def dump(path: String): Unit =
   {
-    val io = new FileWriter(path)
-    val break = "//" + "*" * 76 + '\n'
+    val w = new FileWriter(path)
 
-    io.append(break + '\n')
+    w.append(line_break).append('\n')
 
-    for (i ← 0 until library_size)
+    for (i ← 0 until library_size if all_fields || !m_slot(i).equals(Effect.default))
     {
-      io.append(f"${i+1}%2d:   ")
-      m_slot(i).dump(io)
-      io.append('\n')
+      w.append(f"${i+1}%2d: ")
+      m_slot(i).dump(w)
+      w.append('\n')
     }
 
-    io.append('\n' + break)
-    io.flush()
+    w.append('\n').append(line_break)
+    w.flush()
   }
 
   val m_slot: Array[Effect] = Array.fill(library_size)(Effect())

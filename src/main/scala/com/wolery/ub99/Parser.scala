@@ -88,9 +88,9 @@ object Parser extends Logging
     {
       val s = read("S")
 
-      if ("+-:".contains(peek()))
+      if (":+-".contains(peek()))
       {
-        onUpdate(s,read("+-:"),read("ℤℝS"))
+        onUpdate(s,read(":+-"),read("ℤℝS"))
       }
       else
       {
@@ -184,35 +184,34 @@ object Parser extends Logging
 
     def onUpdate(field: Token,update: Token,value:Token): Unit =
     {
-
       try
       {
         val f = m_eff(field.name)
 
+        (update.token,value.token) match
+        {
+          case(':','S') ⇒ foo(f.overwrite(value.name))
+          case('+','S') ⇒ m_tok.badSyntax("ℤℝ")
+          case('-','S') ⇒ m_tok.badSyntax("ℤℝ")
 
-      (update.token,value.token) match
-      {
-        case(':','S') ⇒ foo(f.overwrite(value.name))
-        case(':', _ ) ⇒ foo(f.overwrite(value.real))
-        case('+', _ ) ⇒ foo(f.increment(value.real))
-        case('-', _ ) ⇒ foo(f.decrement(value.real))
-        case( _ ,'S') ⇒ m_tok.badSyntax("ℤℝ")
-        case( _ , _ ) ⇒ m_tok.badSyntax("ℤℝ")
-       }
+          case(':', _ ) ⇒ foo(f.overwrite(value.real))
+          case('+', _ ) ⇒ foo(f.increment(value.real))
+          case('-', _ ) ⇒ foo(f.decrement(value.real))
+
+          case( _ , _ ) ⇒ m_tok.badSyntax("ℤℝ")
+        }
 
         def foo(action: ⇒ Boolean) =
         {
           if (!action)
           {
-              // error
+
           }
         }
-
-
       }
       catch
       {
-        case _: Exception => field.badFieldName(m_eff)
+        case _: Exception ⇒ field.badFieldName(m_eff)
       }
 
       log.debug(f"${field.lexeme}%-4s${update.lexeme}${value.lexeme},")
@@ -225,7 +224,7 @@ object Parser extends Logging
         m_tok.badImplicitSlot()
       }
 
-      effects(m_slt) = m_eff
+      effects(m_slt - 1) = m_eff
       m_slt += 1
       log.debug(s")\n")
     }
@@ -235,7 +234,6 @@ object Parser extends Logging
       parseStatement()
     }
   }
-
 }
 
 //****************************************************************************

@@ -177,12 +177,6 @@ object Main
       .add("v","version")                                // ...simple switch
       ,args)
   }
-
-  /**
-   * Indicates whether or not to include every field value in an effect dump,
-   * even those fields whose values have not changed from their default value.
-   */
-  var all_fields: Boolean = false                        // All field values?
 }
 
 //****************************************************************************

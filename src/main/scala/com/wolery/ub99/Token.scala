@@ -16,14 +16,14 @@ package com.wolery.ub99
 
 //****************************************************************************
 
-case class Token (token: Char,lexeme: String,line: ℕ,file: String = "stdin") extends Errors
+case class Token (token: Char,lexeme: String,line: ℕ,file: String = "") extends Errors
 {
   def is(tokens: String): Boolean = tokens.contains(token)
 
-  def real: ℝ                   = {require(is("ℤℝ"));lexeme.toDouble}
-  def integer: ℤ                = {require(is("ℤ")); lexeme.toInt}
-  def name: Name                = {require(is("S")); lexeme.intern}
-  def string: String            = {require(is("S")); lexeme}
+  def real: ℝ                   = {assert(is("ℤℝ"));lexeme.toDouble}
+  def integer: ℤ                = {assert(is("ℤ")); lexeme.toInt}
+  def name: Name                = {assert(is("S")); lexeme.intern}
+  def string: String            = {assert(is("S")); lexeme}
 
   def copy(token: Char,lexeme: String): Token =
   {

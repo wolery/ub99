@@ -4,7 +4,7 @@
 //*  Version : $Header:$
 //*
 //*
-//*  Purpose :
+//*  Purpose : Initializes a dedicated logger that instances can write to.
 //*
 //*
 //*  Comments: This file uses a tab size of 2 spaces.
@@ -14,15 +14,31 @@
 
 package com.wolery.ub99
 
-import org.slf4j.{Logger,LoggerFactory}
+import org.slf4j.Logger
 
-//****************************************************************************
-
+/**
+ * Initializes a dedicated logger that instances of this class can write to.
+ *
+ * @author Jonathon Bell
+ */
 trait Logging
 {
-  def logName: String  = this.getClass.getName.stripSuffix("$")
+  /**
+   * The name of the logger that instances of this class can write to.
+   */
+  def logName: String =
+  {
+    this.getClass.getName.stripSuffix("$")               // For Scala objects
+  }
 
-  lazy val log: Logger = LoggerFactory.getLogger(logName)
+  /**
+   * A dedicated logger that instances of this class can write to.
+   */
+  @transient
+  lazy val log: Logger =
+  {
+    org.slf4j.LoggerFactory.getLogger(logName)           // Initialize logger
+  }
 }
 
 //****************************************************************************

@@ -84,10 +84,9 @@ object Main
     }
     catch                                                // Operation failed
     {
-      case e: Throwable ⇒                                // ...catch everything
+      case e: Exception ⇒                                // ...catch exception
       {
-        e.printStackTrace()
-        println(e.getMessage)                            // ....display error
+        println(s"ub99: ${e.getMessage}")                // ....display error
         exit(1)                                          // ....exit with code
       }
     }

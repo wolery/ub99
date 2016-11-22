@@ -26,14 +26,8 @@ final class Library extends Errors with Logging
 
   def load(path: String): Unit =
   {
-    val io = new FileInputStream(path)
     val b = new Bytes(image_size)
-    val n = io.read(b)
-
-    if (n == 0)
-    {
-      badLoadPath(path)
-    }
+    val n = open(path,new FileInputStream(_),badLoadPath).read(b)
 
     if (n != b.length)
     {
@@ -58,8 +52,7 @@ final class Library extends Errors with Logging
 
   def save(path: String): Unit =
   {
-    val io = new FileOutputStream(path)
-    val b  = new Bytes(image_size)
+    val b = new Bytes(image_size)
 
     image_magic.getBytes.copyToArray(b,0x0000)
     image_magic.getBytes.copyToArray(b,0x0040)
@@ -74,19 +67,17 @@ final class Library extends Errors with Logging
       e.copyToArray(b,header_size + i * effect_size)
     }
 
-    val n = io.write(b)
+    val n = open(path,new FileOutputStream(_),badSavePath).write(b)
   }
 
   def read(path: String): Unit =
   {
-    val r = new FileReader(path)
-
-    Parser.parse(r,m_slot)
+    Parser.parse(open(path,new FileReader(_),badReadPath),m_slot)
   }
 
   def dump(path: String): Unit =
   {
-    val w = new FileWriter(path)
+    val w = open(path,new FileWriter(_),badDumpPath)
 
     w.append(line_break).append('\n')
 
@@ -99,6 +90,11 @@ final class Library extends Errors with Logging
 
     w.append('\n').append(line_break)
     w.flush()
+  }
+
+  def open[α](path: String,as: String ⇒ α,fail: String ⇒ Nothing): α =
+  {
+    try as(path) catch {case _: Exception ⇒ fail(path)}
   }
 
   val m_slot: Array[Effect] = Array.fill(library_size)(Effect())

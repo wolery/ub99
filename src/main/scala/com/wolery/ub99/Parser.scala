@@ -177,6 +177,7 @@ object Parser extends Logging
 
     def onCreate(kind: Token): Unit =
     {
+      log.debug(s"${kind.lexeme}(")
       m_eff = Effect(kind.name)
 
       log.debug(s"${kind.lexeme}(")
@@ -186,6 +187,7 @@ object Parser extends Logging
     {
       try
       {
+        println(field.name)
         val f = m_eff(field.name)
 
         (update.token,value.token) match
@@ -205,7 +207,7 @@ object Parser extends Logging
         {
           if (!action)
           {
-
+            println("bad field value")
           }
         }
       }

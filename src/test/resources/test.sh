@@ -48,8 +48,8 @@ test-read-dump-all()     { test-case read-dump-all $1 "-r $1 -d $1.tmp -a" ;}
 
 #*****************************************************************************
 
-for i in $dir/ub9/*.ub9; do test-load-save     $i; done
-for i in $dir/txt/*.txt; do test-read-dump     $i; done
-for i in $dir/all/*.txt; do test-read-dump-all $i; done
+ for i in $dir/load-save-*.ub9;     do test-load-save     $i; done
+ for i in $dir/read-dump-*.txt;     do test-read-dump     $i; done
+ for i in $dir/read-dump-all-*.txt; do test-read-dump-all $i; done
 
 #*****************************************************************************

@@ -34,7 +34,6 @@ trait Logging
   /**
    * A dedicated logger that instances of this class can write to.
    */
-  @transient
   lazy val log: Logger =
   {
     org.slf4j.LoggerFactory.getLogger(logName)           // Initialize logger

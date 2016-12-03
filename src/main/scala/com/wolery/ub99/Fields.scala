@@ -154,7 +154,6 @@ object Fields
 
   def newName(n: Name,c: Code,d: Name): Field = new FieldOf[String](n,c,d)
   {
-    def copy                    = newName(n,c,d)
     def help                    = println("A string of at most 12 characters")
     def load(b: Bytes)          = m_val = substring(b,16,12)
     def save(b: Bytes)          = m_val.getBytes.copyToArray(b,16)
@@ -165,7 +164,7 @@ object Fields
     def overwrite(s: String)    = s.length<=12 && {m_val=s;true}
   }
 
-  def newKnob(n: Name,c: Code,d: Name): Field = new FieldOf[String](n,c,d)
+  def newKnob(n: Name,c: Code,d: Name): Field = new FieldOf[Name](n,c,d)
   {
     var m_eff: Effect           = null
 
@@ -184,22 +183,27 @@ object Fields
       case  _                   ⇒ put(bytes,m_eff(m_val).code)
     }
 
-    def copy                    = {val f = newKnob(n,c,d); f.set(m_eff); f}
     def help                    = tabulate(replace(m_eff.names,s"$default*",default,"KNB1","KNB2","KNB3"))
+    override
+    def overwrite(v: Name)      =
+    {
+      (m_eff.m_name.contains(v)||v=="NONE") &&
+      {m_val = v;true}
+    }
   }
 
-  def newChoice(n: Name,c: Code,d: ℕ,s: String*): Field = new FieldOf[String](n,c,s(d))
+  def newChoice(n: Name,c: Code,d: ℕ,s: String*): Field = new FieldOf[Name](n,c,s(d))
   {
-    def copy                    = newChoice(n,c,d,s:_*)
     def help                    = tabulate(replace(s,s"$default*",default))
     def load(b: Bytes)          = {m_val = s(get(b))}
     def save(b: Bytes)          = put(b,s.indexOf(m_val))
+    override
+    def overwrite(v: Name)      = s.contains(v) && {m_val=v;true}
   }
 
   def newFreqcy(n: Name,c: Code,l: Hz,h: Hz,s: Hz,d: Hz): Field = new FieldOf[Hz](n,c,d)
   {
     val m_phi: ℝ                = Math.log(h.Hz / l.Hz) / s.Hz
-    def copy                    = newFreqcy(n,c,l,h,s,d)
     def help                    = println(s"A frequency between $l and $h [$default*]")
     def load(b: Bytes)          = m_val = l.Hz * Math.exp(m_phi * get(b));
     def save(b: Bytes)          = put(b,round(Math.log(m_val.Hz / l.Hz) / m_phi))
@@ -216,7 +220,6 @@ object Fields
   {
     assert(p.size >= 2)
 
-    def copy                    = newLinear(n,c,d,p:_*)
     def help                    = println(s"A number between ${p(0)._2} and ${p.last._2} [$default*]")
 
     override

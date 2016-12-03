@@ -19,13 +19,14 @@ package com.wolery.ub99
  *
  * @author Jonathon Bell
  */
-trait Field
+trait Field extends Cloneable
 {
   def name                           : Name
   def code                           : Code
 
   def help                           : Unit
   def copy                           : Field
+
   def dirty                          : Boolean
 
   def load(bytes:  Bytes)            : Unit

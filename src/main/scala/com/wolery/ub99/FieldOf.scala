@@ -50,6 +50,8 @@ extends Field
 
   def dump(writer: Writer)          = writer.append(s"$name:=$m_val")
 
+  def copy: Field = clone.asInstanceOf[Field]
+
   def put(bytes: Bytes,v: Int) =
   {
     assert(code != -16)

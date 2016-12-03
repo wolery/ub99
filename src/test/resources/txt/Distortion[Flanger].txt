@@ -1,2 +1,0 @@
-1:  Distortion[Flanger] ()
-99: 1  ()

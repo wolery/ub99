@@ -32,7 +32,6 @@ object Main
   {
     try
     {
-      val l: Library     = new Library();                // Create the library
       val c: CommandLine = parse(args);                  // Parse command line
 
       if (c.hasOption('h'))                              // Asking for help?
@@ -64,30 +63,58 @@ object Main
 
       if (c.hasOption('l'))
       {
-        l.load(c.getOptionValue('l'))
+        Library.load(c.getOptionValue('l'))
       }
 
       if (c.hasOption('r'))
       {
-        l.read(c.getOptionValue('r'))
+        Library.read(c.getOptionValue('r'))
       }
 
       if (c.hasOption('d'))
       {
-        l.dump(c.getOptionValue('d'))
+        Library.dump(c.getOptionValue('d'))
       }
 
       if (c.hasOption('s'))
       {
-        l.save(c.getOptionValue('s'))
+        Library.save(c.getOptionValue('s'))
       }
     }
     catch                                                // Operation failed
     {
       case e: Exception ⇒                                // ...catch exception
       {
+        e.printStackTrace
         println(s"ub99: ${e.getMessage}")                // ....display error
         exit(1)                                          // ....exit with code
+      }
+    }
+  }
+
+  /**
+   * Test the command line for an option that takes a required 'path' argument
+   * and if present apply the given function to its path. If the action fails,
+   * then fix up the error message to include the path that caused the problem
+   * and re-throw the exception.
+   *
+   * @param cl      the parsed command line
+   * @param option  an option that requires a path argument
+   * @param action  an action to apply to the option's path
+   */
+  def onPath(cl: CommandLine,option: Char,action: String ⇒ Unit,fail: String ⇒ Nothing): Unit =
+  {
+    if (cl.hasOption(option))
+    {
+      val p = cl.getOptionValue(option)
+
+      try
+      {
+        action(p)
+      }
+      catch
+      {
+        case e: Exception ⇒
       }
     }
   }

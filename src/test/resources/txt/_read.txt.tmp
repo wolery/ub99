@@ -1,0 +1,103 @@
+//****************************************************************************
+
+ 1: Delay[11111111]    ("AH Swell   1",ELVL:=7.5,DLVL:=5.0,DT1:=21.6,FB1:=0.0,SPD1:=3.5,DPT1:=2.5,PAN1:=-10.0,LVL1:=10.0,DT2:=29.0,SPD2:=4.0,DPT2:=2.5,PAN2:=10.0,LVL2:=10.0,DT3:=350.0,FB3:=4.0,SPD3:=4.2,DPT3:=2.5,PAN3:=-10.0,LVL3:=10.0,DT4:=463.0,FB4:=3.0,SPD4:=3.7,DPT4:=2.5,PAN4:=10.0,LVL4:=10.0,DT5:=250.0,FB5:=5.4,SPD5:=3.5,DPT5:=2.5,PAN5:=-10.0,LVL5:=10.0,DT6:=347.0,FB6:=4.2,SPD6:=3.8,DPT6:=2.5,PAN6:=10.0,LVL6:=10.0,DT7:=300.0,FB7:=5.8,SPD7:=4.7,DPT7:=2.5,PAN7:=10.0,LVL7:=10.0,DT8:=400.0,FB8:=5.0,SPD8:=3.3,DPT8:=2.5,PAN8:=-10.0,LVL8:=10.0)
+ 2: 1                  ("AH Swell   1",DLVL:=5.0,DT1:=21.6,DT2:=29.0,DT3:=350.0,FB3:=4.0,DT4:=463.0,FB4:=3.0,DT5:=250.0,FB5:=5.4,DT6:=347.0,FB6:=4.2,DT7:=300.0,PAN7:=10.0,DT8:=400.0,PAN8:=-10.0) // AH Swell
+ 3: Delay[11111111]    ("AH Chorus  1",ELVL:=8.5,DLVL:=5.0,DT1:=23.6,FB1:=0.0,SPD1:=3.5,DPT1:=2.5,PAN1:=-10.0,LVL1:=10.0,DT2:=30.0,SPD2:=4.0,DPT2:=2.5,PAN2:=10.0,LVL2:=10.0,DT3:=38.1,SPD3:=4.2,DPT3:=2.5,PAN3:=10.0,LVL3:=10.0,DT4:=47.6,SPD4:=3.7,DPT4:=2.5,PAN4:=-10.0,LVL4:=10.0,DT5:=300.0,FB5:=4.5,SPD5:=3.5,DPT5:=2.5,PAN5:=-10.0,LVL5:=6.5,DT6:=400.0,FB6:=3.5,SPD6:=3.8,DPT6:=2.5,PAN6:=10.0,LVL6:=6.5,DT7:=341.0,FB7:=4.3,SPD7:=4.7,DPT7:=2.5,PAN7:=-10.0,LVL7:=6.5,DT8:=450.0,FB8:=3.4,SPD8:=3.3,DPT8:=2.5,PAN8:=10.0,LVL8:=6.5)
+ 4: 3                  ("AH Chorus  1",ELVL:=8.5,DLVL:=5.0,DT1:=23.6,SPD1:=3.5,DT2:=30.0,DT3:=38.1,SPD3:=4.2,DT4:=47.6,SPD4:=3.7,LVL5:=6.5,LVL6:=6.5,LVL7:=6.5,LVL8:=6.5) // AH Chorus
+ 5: 3                  ("AH Chorus  1",ELVL:=8.5,DLVL:=5.0,DT1:=23.6,SPD1:=3.5,DT2:=30.0,SPD2:=4.0,DT3:=38.1,SPD3:=4.2,PAN3:=10.0,LVL3:=10.0,DT4:=47.6,SPD4:=3.7,PAN4:=-10.0,LVL4:=10.0,LVL5:=6.5,LVL6:=6.5,LVL7:=6.5,LVL8:=6.5) // AH Chorus
+ 6: 3                  ("AH Chorus  1",ELVL:=8.5,DLVL:=5.0,DT1:=23.6,SPD1:=3.5,DPT1:=2.5,DT2:=30.0,SPD2:=4.0,DPT2:=2.5,DT3:=38.1,SPD3:=4.2,DPT3:=2.5,PAN3:=10.0,DT4:=47.6,SPD4:=3.7,DPT4:=2.5,PAN4:=-10.0,FB5:=4.5,DPT5:=2.5,LVL5:=6.5,FB6:=3.5,DPT6:=2.5,LVL6:=6.5,DT7:=341.0,FB7:=4.3,DPT7:=2.5,LVL7:=6.5,DT8:=450.0,FB8:=3.4,DPT8:=2.5,LVL8:=6.5) // AH Chorus
+ 7: 3                  ("AH Chorus  1",ELVL:=8.5,DLVL:=5.0,DT1:=23.6,DT2:=30.0,DT3:=38.1,PAN3:=10.0,DT4:=47.6,PAN4:=-10.0,FB5:=4.5,LVL5:=6.5,FB6:=3.5,LVL6:=6.5,FB7:=4.3,LVL7:=6.5,FB8:=3.4,LVL8:=6.5) // AH Chorus
+ 8: 3                  ("AH Chorus  1",DLVL:=5.0,DT1:=23.6,DT2:=30.0,DT3:=38.1,SPD3:=4.2,PAN3:=10.0,DT4:=47.6,PAN4:=-10.0,DT5:=300.0,FB5:=4.5,SPD5:=3.5,LVL5:=6.5,FB6:=3.5,SPD6:=3.8,LVL6:=6.5,DT7:=341.0,FB7:=4.3,SPD7:=4.7,DPT7:=2.5,PAN7:=-10.0,LVL7:=6.5,DT8:=450.0,FB8:=3.4,SPD8:=3.3,DPT8:=2.5,PAN8:=10.0,LVL8:=6.5) // AH Chorus
+ 9: 3                  ("AH Chorus  1",ELVL:=8.5,DLVL:=5.0,DT1:=23.6,TAP1:=100.0,SPD1:=3.5,DT2:=30.0,TAP2:=100.0,SPD2:=4.0,DT3:=38.1,TAP3:=100.0,SPD3:=4.2,PAN3:=10.0,DT4:=47.6,TAP4:=100.0,SPD4:=3.7,PAN4:=-10.0,LVL4:=10.0,DT5:=300.0,FB5:=4.5,SPD5:=3.5,LVL5:=6.5,DT6:=400.0,FB6:=3.5,SPD6:=3.8,LVL6:=6.5,DT7:=341.0,FB7:=4.3,SPD7:=4.7,LVL7:=6.5,DT8:=450.0,FB8:=3.4,SPD8:=3.3,LVL8:=6.5) // AH Chorus
+10: 3                  ("AH Chorus  1",ELVL:=8.5,DLVL:=5.0,DT1:=23.6,SPD1:=3.5,DPT1:=2.5,DT2:=30.0,SPD2:=4.0,DPT2:=2.5,DT3:=38.1,SPD3:=4.2,DPT3:=2.5,PAN3:=10.0,DT4:=47.6,SPD4:=3.7,DPT4:=2.5,PAN4:=-10.0,DT5:=300.0,FB5:=4.5,SPD5:=3.5,DPT5:=2.5,LVL5:=6.5,DT6:=400.0,FB6:=3.5,SPD6:=3.8,DPT6:=2.5,LVL6:=6.5,DT7:=341.0,FB7:=4.3,SPD7:=4.7,DPT7:=2.5,LVL7:=6.5,DT8:=450.0,FB8:=3.4,SPD8:=3.3,DPT8:=2.5,LVL8:=6.5) // AH Chorus
+11: 3                  ("AH Chorus  1",ELVL:=8.5,DLVL:=5.0,DT1:=23.6,TAP1:=100.0,SPD1:=3.5,DPT1:=2.5,DT2:=30.0,TAP2:=100.0,SPD2:=4.0,DPT2:=2.5,DT3:=38.1,TAP3:=100.0,SPD3:=4.2,DPT3:=2.5,PAN3:=10.0,DT4:=47.6,TAP4:=100.0,SPD4:=3.7,DPT4:=2.5,PAN4:=-10.0,DT5:=300.0,FB5:=4.5,SPD5:=3.5,DPT5:=2.5,LVL5:=6.5,DT6:=400.0,FB6:=3.5,SPD6:=3.8,DPT6:=2.5,LVL6:=6.5,DT7:=341.0,FB7:=4.3,SPD7:=4.7,DPT7:=2.5,LVL7:=6.5,DT8:=450.0,FB8:=3.4,SPD8:=3.3,DPT8:=2.5,LVL8:=6.5) // AH Chorus
+12: 3                  ("AH Chorus  1",DLVL:=5.0,DT1:=23.6,TAP1:=100.0,SPD1:=3.5,DPT1:=2.5,DT2:=30.0,TAP2:=100.0,SPD2:=4.0,DPT2:=2.5,DT3:=38.1,FB3:=0.0,SPD3:=4.2,DPT3:=2.5,PAN3:=10.0,LVL3:=10.0,DT4:=47.6,FB4:=0.0,SPD4:=3.7,DPT4:=2.5,PAN4:=-10.0,LVL4:=10.0,FB5:=4.5,DPT5:=2.5,LVL5:=6.5,FB6:=3.5,SPD6:=3.8,DPT6:=2.5,LVL6:=6.5,DT7:=341.0,FB7:=4.3,SPD7:=4.7,DPT7:=2.5,PAN7:=-10.0,LVL7:=6.5,DT8:=450.0,FB8:=3.4,SPD8:=3.3,DPT8:=2.5,PAN8:=10.0,LVL8:=6.5) // AH Chorus
+13: 3                  ("AH Chorus  1",ELVL:=8.5,DLVL:=5.0,TAP1:=100.0,SPD1:=3.5,DPT1:=2.5,TAP2:=100.0,SPD2:=4.0,DPT2:=2.5,DT3:=38.1,TAP3:=100.0,SPD3:=4.2,DPT3:=2.5,PAN3:=10.0,DT4:=47.6,TAP4:=100.0,SPD4:=3.7,DPT4:=2.5,PAN4:=-10.0,DT5:=300.0,FB5:=4.5,SPD5:=3.5,DPT5:=2.5,PAN5:=-10.0,LVL5:=6.5,DT6:=400.0,FB6:=3.5,SPD6:=3.8,DPT6:=2.5,PAN6:=10.0,LVL6:=6.5,DT7:=341.0,FB7:=4.3,SPD7:=4.7,DPT7:=2.5,PAN7:=-10.0,LVL7:=6.5,DT8:=450.0,FB8:=3.4,SPD8:=3.3,DPT8:=2.5,PAN8:=10.0,LVL8:=6.5) // AH Chorus
+14: 3                  ("AH Chorus  1",ELVL:=8.5,DLVL:=5.0,DT1:=23.6,SPD1:=3.5,DPT1:=2.5,DT2:=30.0,SPD2:=4.0,DPT2:=2.5,DT3:=38.1,SPD3:=4.2,DPT3:=2.5,PAN3:=10.0,DT4:=47.6,SPD4:=3.7,DPT4:=2.5,PAN4:=-10.0,FB5:=4.5,DPT5:=2.5,LVL5:=6.5,FB6:=3.5,SPD6:=3.8,DPT6:=2.5,LVL6:=6.5,DT7:=341.0,FB7:=4.3,SPD7:=4.7,DPT7:=2.5,PAN7:=-10.0,LVL7:=6.5,DT8:=450.0,FB8:=3.4,SPD8:=3.3,DPT8:=2.5,PAN8:=10.0,LVL8:=6.5) // AH Chorus
+15: Delay[11111111]    ("AH Lead    1",KNB3:=PHS2,ELVL:=8.5,DLVL:=8.5,DT1:=29.7,FB1:=0.0,PAN1:=-10.0,LVL1:=10.0,DT2:=40.0,PAN2:=10.0,LVL2:=10.0,DT3:=96.0,PAN3:=-5.0,LVL3:=4.0,DT4:=110.0,PAN4:=5.0,LVL4:=4.0,DT5:=300.0,FB5:=4.5,PAN5:=-10.0,LVL5:=5.0,DT6:=400.0,FB6:=4.0,PAN6:=10.0,LVL6:=5.0,DT7:=355.0,FB7:=3.5,PAN7:=-10.0,LVL7:=5.0,DT8:=461.0,FB8:=3.0,PAN8:=10.0,LVL8:=5.0)
+16: 15                 ("AH Lead    1",DT1:=29.7,DT2:=40.0,PAN3:=-5.0,LVL3:=4.0,PAN4:=5.0,LVL4:=4.0,DT5:=300.0,DT6:=400.0) // AH Lead
+17: 15                 ("AH Lead    1",ELVL:=8.5,DT1:=29.7,DT2:=40.0,DT3:=96.0,PAN3:=-5.0,LVL3:=4.0,DT4:=110.0,PAN4:=5.0,LVL4:=4.0,LVL5:=5.0,LVL6:=5.0,FB7:=3.5,LVL7:=5.0,DT8:=461.0,FB8:=3.0,LVL8:=5.0) // AH Lead
+18: 15                 ("AH Lead    1",DT1:=29.7,DT2:=40.0,DT3:=96.0,PAN3:=-5.0,LVL3:=4.0,DT4:=110.0,FB4:=0.0,PAN4:=5.0,DT5:=300.0,FB5:=4.5,PAN5:=-10.0,LVL5:=5.0,DT6:=400.0,FB6:=4.0,PAN6:=10.0,LVL6:=5.0,DT7:=355.0,FB7:=3.5,PAN7:=-10.0,LVL7:=5.0,DT8:=461.0,FB8:=3.0,PAN8:=10.0,LVL8:=5.0) // AH Lead
+19: 15                 ("AH Lead    1",DT1:=29.7,DT2:=40.0,LVL3:=4.0,LVL4:=4.0,LVL5:=5.0,LVL6:=5.0,LVL7:=5.0,LVL8:=5.0) // AH Lead
+20: 15                 ("AH Lead    1",LVL3:=4.0,LVL4:=4.0,LVL5:=5.0,LVL6:=5.0,LVL7:=5.0,LVL8:=5.0) // AH Lead
+21: 15                 ("AH Lead    1",DT1:=29.7,DT2:=40.0,DT3:=96.0,PAN3:=-5.0,LVL3:=4.0,DT4:=110.0,FB4:=0.0,PAN4:=5.0,LVL4:=4.0,DT5:=300.0,FB5:=4.5,PAN5:=-10.0,DT6:=400.0,FB6:=4.0,PAN6:=10.0,LVL6:=5.0,DT7:=355.0,FB7:=3.5,PAN7:=-10.0,LVL7:=5.0,DT8:=461.0,FB8:=3.0,PAN8:=10.0,LVL8:=5.0) // AH Lead
+22: 15                 ("AH Lead    1",DT1:=29.7,DT2:=40.0,DT3:=96.0,PAN3:=-5.0,LVL3:=4.0,DT4:=110.0,FB4:=0.0,PAN4:=5.0,LVL4:=4.0,DT5:=300.0,FB5:=4.5,PAN5:=-10.0,LVL5:=5.0,DT6:=400.0,FB6:=4.0,PAN6:=10.0,LVL6:=5.0,DT7:=355.0,FB7:=3.5,PAN7:=-10.0,LVL7:=5.0,DT8:=461.0,FB8:=3.0,PAN8:=10.0,LVL8:=5.0) // AH Lead
+23: 15                 ("AH Lead    1",DT1:=29.7,DT2:=40.0,DT3:=96.0,FB3:=0.0,PAN3:=-5.0,LVL3:=4.0,DT4:=110.0,FB4:=0.0,PAN4:=5.0,DT5:=300.0,FB5:=4.5,PAN5:=-10.0,LVL5:=5.0,DT6:=400.0,FB6:=4.0,PAN6:=10.0,LVL6:=5.0,DT7:=355.0,FB7:=3.5,PAN7:=-10.0,LVL7:=5.0,DT8:=461.0,FB8:=3.0,PAN8:=10.0,LVL8:=5.0) // AH Lead
+24: Delay[11111111]    ("AH Stereo   ",DLVL:=8.0,DT1:=5.3,FB1:=0.0,PAN1:=-10.0,LVL1:=7.0,DT2:=5.5,PHS2:=Reverse,PAN2:=10.0,LVL2:=9.7,DT3:=250.0,FB3:=4.0,PAN3:=-10.0,LVL3:=3.7,DT4:=341.0,FB4:=3.5,PAN4:=10.0,LVL4:=3.7,DT5:=300.0,FB5:=4.0,PAN5:=-10.0,LVL5:=3.7,DT6:=400.0,FB6:=3.5,PAN6:=10.0,LVL6:=3.7)
+25: Delay[11111111]    ("AH Echo    1",ELVL:=8.5,DLVL:=8.5,DT1:=321.0,FB1:=4.7,SPD1:=3.7,DPT1:=2.3,PAN1:=-10.0,LVL1:=5.5,DT2:=429.0,FB2:=4.0,SPD2:=4.1,DPT2:=2.3,PAN2:=10.0,LVL2:=5.5,DT3:=360.0,FB3:=3.5,SPD3:=4.6,DPT3:=2.3,LVL3:=5.0)
+26: 25                 ("AH Echo    1",DT1:=321.0,FB1:=4.7,SPD1:=3.7,DPT1:=2.3,DT2:=429.0,FB2:=4.0,SPD2:=4.1,DPT2:=2.3,DT3:=360.0,SPD3:=4.6,DPT3:=2.3,PAN3:=0.0,LVL3:=5.0,DT4:=0.1,FB4:=0.0,SPD4:=0.0,DPT4:=0.0,PAN4:=0.0,LVL4:=0.0) // AH Echo
+27: 25                 ("AH Echo    1",DT1:=321.0,FB1:=4.7,SPD1:=3.7,DPT1:=2.3,LVL1:=5.5,DT2:=429.0,DPT2:=2.3,LVL2:=5.5,DT3:=360.0,SPD3:=4.6,DPT3:=2.3,PAN3:=0.0,DT4:=0.1,FB4:=0.0,SPD4:=0.0,DPT4:=0.0,PAN4:=0.0,LVL4:=0.0) // AH Echo
+28: Reverb+Flanger     ("JB Chorus  1",KNB1:=FREQ,KNB2:=DPTH,KNB3:=BAL,FB:=0.0,IDLY:=90.0,FREQ:=2.0,MDT:=4.0,WAVE:=Sine,RT:=3.5,HRAT:=0.9,DIFF:=8.0,DNST:=85.0,LPF:=9.01kHz,BAL:=90.0,DPTH:=10.0,MIX:=100.0)
+29: 28                 ("JB Chorus  1",FREQ:=2.0,MDT:=4.0,DPTH:=10.0) // JB Chorus
+30: Delay[11111111]    ("MS Chorus  1",KNB1:=DLVL,KNB2:=NONE,KNB3:=NONE,DLVL:=0.0,DT1:=14.0,FB1:=0.0,SPD1:=4.0,DPT1:=3.0,PAN1:=-10.0,LVL1:=8.0,DT2:=26.0,SPD2:=4.7,DPT2:=3.0,PAN2:=10.0,LVL2:=10.0,DT3:=500.0,FB3:=2.0,LVL3:=3.5)
+31: 30                 ("MS Chorus  1",DLVL:=0.0) // MS Chorus
+32: Reverb>Chorus      ("JB Reverb  1",IDLY:=90.0,FREQ:=1.7,MDT:=60.0,WAVE:=Sine,RT:=3.5,HRAT:=0.9,DIFF:=8.0,DNST:=85.0,LPF:=9.01kHz,BAL:=100.0,AMDP:=50.0,PMDP:=50.0,MIX:=11.0)
+33: 32                 ("JB Reverb  1",IDLY:=90.0,RT:=3.5,HRAT:=0.9,DIFF:=8.0,DNST:=85.0,LPF:=9.01kHz) // JB Reverb
+34: 32                 ("JB Reverb  1",BAL:=100.0) // JB Reverb
+35: 32                 ("JB Reverb  1",IDLY:=90.0,RT:=3.5,HRAT:=0.9,DIFF:=8.0,DNST:=85.0,LPF:=9.01kHz,BAL:=100.0) // JB Reverb
+36: Amp                (AMP:=Solid,GAIN:=5.0,MSTR:=5.0,NGHL:=150.701,NGDC:=40.7609)
+37: 36                 () // 
+38: 36                 () // 
+39: 36                 () // 
+40: 36                 () // 
+41: 36                 () // 
+42: 36                 () // 
+43: 36                 () // 
+44: 36                 () // 
+45: 36                 () // 
+46: 36                 () // 
+47: 36                 () // 
+48: 36                 () // 
+49: 36                 () // 
+50: 36                 () // 
+51: 36                 () // 
+52: 36                 () // 
+53: 36                 () // 
+54: 36                 () // 
+55: Amp[Flanger]       ("JB Clean  G1",KNB3:=DLVL,AMP:=Crunch1,GAIN:=4.5,MSTR:=8.0,TRE:=3.0,LMID:=6.8,BASS:=8.0,PRE:=4.0,NGHL:=150.701,NGDC:=40.7609,CREL:=260.907,FLDT:=1.1,FLSP:=2.0,FLDP:=2.5,DTFB:=666.7,DT.R:=63.0,D.FB:=16.0,D.HI:=1.0,DLVL:=1.0)
+56: 55                 ("JB Clean  G1") // JB Clean
+57: 55                 ("JB Clean  G1") // JB Clean
+58: Amp[Flanger]       ("JB Lead   G1",KNB3:=DLVL,AMP:=Lead1,GAIN:=5.0,MSTR:=6.0,TRE:=3.0,HMID:=7.0,LMID:=7.0,BASS:=0.0,PRE:=1.0,NGTH:=0.2,NGHL:=150.701,NGDC:=75.5219,CREL:=260.907,FLDT:=1.1,FLSP:=2.0,FLDP:=2.5,DTFB:=403.9,DT.R:=63.0,D.FB:=-16.0,D.HI:=1.0,DLVL:=1.5,DHPF:=238.17Hz)
+59: 58                 ("JB Lead   G1") // JB Lead
+60: 58                 ("JB Lead   G1") // JB Lead
+61: 55                 ("JB Clean  G1",AMP:=Crunch1,GAIN:=4.5,MSTR:=8.0,TRE:=3.0,LMID:=6.8,BASS:=8.0,PRE:=4.0) // JB Clean
+62: 55                 ("JB Clean  G1",AMP:=Crunch1,GAIN:=4.5,MSTR:=8.0,TRE:=3.0,LMID:=6.8,BASS:=8.0) // JB Clean
+63: 55                 ("JB Clean  G1",GAIN:=4.5,MSTR:=8.0,TRE:=3.0,LMID:=6.8,BASS:=8.0) // JB Clean
+64: 58                 ("JB Lead   G1",GAIN:=5.0,MSTR:=6.0,TONE:=10.0,TRE:=3.0,HMID:=7.0,LMID:=7.0,PRE:=1.0) // JB Lead
+65: 58                 ("JB Lead   G1",AMP:=Lead1,TRE:=3.0,HMID:=7.0,LMID:=7.0,BASS:=0.0,PRE:=1.0) // JB Lead
+66: 58                 ("JB Lead   G1",AMP:=Lead1,MSTR:=6.0,TRE:=3.0,HMID:=7.0,LMID:=7.0,BASS:=0.0,PRE:=1.0) // JB Lead
+67: 55                 ("JB Clean  G1",MSTR:=8.0,TRE:=3.0,BASS:=8.0,PRE:=4.0) // JB Clean
+68: 55                 ("JB Clean  G1",MSTR:=8.0) // JB Clean
+69: 55                 ("JB Clean  G1",MSTR:=8.0) // JB Clean
+70: 58                 ("JB Lead   G1",GAIN:=5.0,MSTR:=6.0,TONE:=10.0,TRE:=3.0,HMID:=7.0,LMID:=7.0,BASS:=0.0,PRE:=1.0) // JB Lead
+71: 58                 ("JB Lead   G1",GAIN:=5.0,TONE:=10.0,TRE:=3.0,HMID:=7.0,LMID:=7.0,BASS:=0.0,PRE:=1.0) // JB Lead
+72: 58                 ("JB Lead   G1") // JB Lead
+73: 55                 ("JB Clean  G1",GAIN:=4.5,HMID:=5.0,BASS:=8.0,PRE:=4.0) // JB Clean
+74: 55                 ("JB Clean  G1") // JB Clean
+75: 55                 ("JB Clean  G1") // JB Clean
+76: 55                 ("JB Clean  G1") // JB Clean
+77: 58                 ("JB Lead   G1",GAIN:=5.0,MSTR:=6.0,TONE:=10.0,TRE:=3.0,HMID:=7.0,LMID:=7.0,BASS:=0.0,PRE:=1.0) // JB Lead
+78: 58                 ("JB Lead   G1",MSTR:=6.0,TONE:=10.0,TRE:=3.0,HMID:=7.0,LMID:=7.0,PRE:=1.0) // JB Lead
+79: 58                 ("JB Lead   G1") // JB Lead
+80: 58                 ("JB Lead   G1") // JB Lead
+81: Filter[Dynamic]    ("JB Smooth G1",KNB2:=RESO,KNB3:=MIX,DCY:=98.6211,SENS:=30.0,OFST:=1.0,RESO:=1.0,LEVL:=100.0,MIX:=80.0)
+82: 81                 ("JB Smooth G1") // JB Smooth
+83: 81                 ("JB Smooth G1") // JB Smooth
+84: 81                 ("JB Smooth G1") // JB Smooth
+85: 81                 ("JB Smooth G1") // JB Smooth
+86: 81                 ("JB Smooth G1") // JB Smooth
+87: 81                 ("JB Smooth G1") // JB Smooth
+88: 81                 ("JB Smooth G1") // JB Smooth
+89: 81                 ("JB Smooth G1") // JB Smooth
+90: 81                 ("JB Smooth G1") // JB Smooth
+91: 81                 ("JB Smooth G1") // JB Smooth
+92: 81                 ("JB Smooth G1") // JB Smooth
+93: 81                 ("JB Smooth G1") // JB Smooth
+94: 81                 ("JB Smooth G1") // JB Smooth
+95: 81                 ("JB Smooth G1") // JB Smooth
+96: 81                 ("JB Smooth G1") // JB Smooth
+97: 81                 ("JB Smooth G1") // JB Smooth
+98: 81                 ("JB Smooth G1") // JB Smooth
+99: 81                 ("JB Smooth G1") // JB Smooth
+
+//****************************************************************************

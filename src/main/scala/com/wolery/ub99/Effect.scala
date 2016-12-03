@@ -34,6 +34,13 @@ case class Effect (kind: Kind,name: Name,fields: Seq[Field])
   def names            : Seq[Name] = fields.map(f ⇒ f.name)
   def help             : Unit    = tabulate(names)
 
+  def patchName: Name =
+  {
+    val sw = new java.io.StringWriter()
+    apply(-16).dump(sw)
+    sw.toString.substring(1,11).trim().intern
+  }
+
   def save(bytes: Bytes) =
   {
     bytes(1) = kind
@@ -69,9 +76,37 @@ case class Effect (kind: Kind,name: Name,fields: Seq[Field])
     io.append(')')
   }
 
+  def dump(io: Writer,slot: Slot,effect: Effect) =
+  {
+    assert(this.kind == effect.kind)
+
+    var first = true
+
+    io.append(f"${slot+1}%-19d(")
+
+    for (f ← fields)
+    {
+      if (!f.equals(effect(f.code)))
+      {
+        if (first)
+        {
+          first = false;
+        }
+        else
+        {
+          io.append(',')
+        }
+
+        f.dump(io)
+      }
+    }
+
+    io.append(')')
+  }
+
   def copy: Effect =
   {
-    new Effect(kind,name,fields.map(f ⇒ f.copy))
+    new Effect(kind,name,fields.map(_.copy))
   }
 
   override
@@ -85,9 +120,9 @@ object Effect
   val default =
   {
     val e = Effect("Amp")
-//  e("AMP" ).overwrite("Solid")
-//  e("GAIN").overwrite(5.0)
-//  e("MSTR").overwrite(5.0)
+    e("AMP" ).overwrite("Solid")
+    e("GAIN").overwrite(5.0)
+    e("MSTR").overwrite(5.0)
     e
   }
 

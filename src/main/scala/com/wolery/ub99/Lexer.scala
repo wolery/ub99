@@ -94,7 +94,7 @@ final class Lexer (reader: Reader) extends Errors with Logging
       def more(): Unit              = read() match
       {
         case c if c.isLetterOrDigit ⇒ push(c);more()
-        case c if "[].|->".contains(c)⇒push(c);more()
+        case c if "[+->.]".contains(c)⇒push(c);more()
         case c                      ⇒ unread(c)
       }
 

@@ -20,7 +20,7 @@ import Utilities._
 
 //****************************************************************************
 
-final class Library extends Errors with Logging
+object Library extends Errors with Logging
 {
   def format(message: String): String = message
 
@@ -79,12 +79,28 @@ final class Library extends Errors with Logging
   {
     val w = open(path,new FileWriter(_),badDumpPath)
 
+    val map = scala.collection.mutable.Map[String,Slot]()
+
     w.append(line_break).append('\n')
 
-    for (i ← 0 until library_size if all_fields || !m_slot(i).equals(Effect.default))
+    for (s ← 0 until library_size if all_fields || !m_slot(s).equals(Effect.default))
     {
-      w.append(f"${i+1}%2d: ")
-      m_slot(i).dump(w)
+      val e = m_slot(s)
+      val n = e.patchName
+      val t = map.getOrElseUpdate(n,s)
+
+      w.append(f"${s+1}%2d: ")
+
+      if (s!=t && m_slot(s).kind==m_slot(t).kind)
+      {
+        m_slot(t).dump(w,t,m_slot(s))
+        w.append(" // " + n)
+      }
+      else
+      {
+        m_slot(s).dump(w)
+      }
+
       w.append('\n')
     }
 

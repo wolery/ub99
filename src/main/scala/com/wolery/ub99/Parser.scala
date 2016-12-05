@@ -187,7 +187,6 @@ object Parser extends Logging
     {
       try
       {
-        println(field.name)
         val f = m_eff(field.name)
 
         (update.token,value.token) match

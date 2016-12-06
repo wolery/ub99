@@ -46,7 +46,7 @@ test-read-dump()                        { test-case $1 "-r $1 -d $1.tmp $2" ;}
 
 #*****************************************************************************
 
-#for i in $dir/load-save-*.ub9;     do test-load-save $i;    done
+ for i in $dir/load-save-*.ub9;     do test-load-save $i;    done
  for i in $dir/read-dump-min-*.txt; do test-read-dump $i;    done
  for i in $dir/read-dump-all-*.txt; do test-read-dump $i -a; done
 

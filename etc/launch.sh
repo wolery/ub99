@@ -8,10 +8,9 @@
 #**  Purpose : Generic JAR launcher script.
 #**
 #**
-#**  Usage   : 1. Create an executable JAR file  e.g. foo.jar.
-#**            2. Append it to this script       e.g. cat launch.sh foo.jar > foo
-#**            3. Mark resulting file executable e.g. chmod +x foo
-#**
+#**  Usage   : 1. Create executable JAR file  e.g. foo.jar
+#**            2. Append it to this script    e.g. cat launch.sh foo.jar > foo
+#**            3. Mark file executable        e.g. chmod +x foo
 #**
 #**  See Also: https://coderwall.com/p/ssuaxa/how-to-make-a-jar-file-linux-executable
 #**
@@ -58,6 +57,6 @@ JAR=$(which "$0" 2>/dev/null)
 [ $? -gt 0 -a -f "$0" ] && JAR="./$0"
 
 exec $JAVA -jar $JAR "$@"
-exit 1 
+exit $?
 
 #*****************************************************************************

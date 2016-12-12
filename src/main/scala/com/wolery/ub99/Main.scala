@@ -17,6 +17,9 @@ package com.wolery.ub99
 import java.io._
 import scala.sys.exit
 import org.apache.commons.cli._
+import org.apache.commons.cli.Option._
+
+import Library._
 
 /**
  * @author Jonathon Bell
@@ -61,33 +64,23 @@ object Main
         all_fields = true                                // ...set global flag
       }
 
-      if (c.hasOption('l'))
-      {
-        Library.load(c.getOptionValue('l'))
-      }
-
-      if (c.hasOption('r'))
-      {
-        Library.read(c.getOptionValue('r'))
-      }
-
-      if (c.hasOption('d'))
-      {
-        Library.dump(c.getOptionValue('d'))
-      }
-
-      if (c.hasOption('s'))
-      {
-        Library.save(c.getOptionValue('s'))
-      }
+      onPath(c,'l',p⇒load(new FileInputStream(p)), "error loading patch library")
+      onPath(c,'s',p⇒save(new FileOutputStream(p)),"error saving patch library")
+      onPath(c,'r',p⇒read(new FileReader(p)),      "error reading patch edit file")
+      onPath(c,'d',p⇒dump(new FileWriter(p)),      "error dumping patch edit file")
     }
     catch                                                // Operation failed
     {
-      case e: Exception ⇒                                // ...catch exception
+      case e: Error ⇒                                    // ...catch exception
       {
-        e.printStackTrace
         println(s"ub99: ${e.getMessage}")                // ....display error
         exit(1)                                          // ....exit with code
+      }
+      case e: Exception ⇒                                // ...catch exception
+      {
+        e.printStackTrace()                              // ....
+        println(s"ub99: ${e.getMessage}")                // ....display error
+        exit(2)                                          // ....exit with code
       }
     }
   }
@@ -98,23 +91,20 @@ object Main
    * then fix up the error message to include the path that caused the problem
    * and re-throw the exception.
    *
-   * @param cl      the parsed command line
-   * @param option  an option that requires a path argument
-   * @param action  an action to apply to the option's path
+   * @param cl       the parsed command line
+   * @param option   an option that requires a path argument
+   * @param action   an action to apply to the option's path
+   * @param string
    */
-  def onPath(cl: CommandLine,option: Char,action: String ⇒ Unit,fail: String ⇒ Nothing): Unit =
+  def onPath(cl: CommandLine,option: Char,open: String ⇒ Unit,string: String): Unit =
   {
     if (cl.hasOption(option))
     {
-      val p = cl.getOptionValue(option)
+      val path = cl.getOptionValue(option)
 
-      try
+      try open(path) catch
       {
-        action(p)
-      }
-      catch
-      {
-        case e: Exception ⇒
+        case e: IOException ⇒ Error(s"$string '$path': ${e.getMessage}")
       }
     }
   }
@@ -188,20 +178,20 @@ object Main
   {
     implicit class OptionsEx(o: Options)
     {
-      def add(s: String,l: String,f: Option.Builder⇒Option.Builder = identity): Options =
-        o.addOption(f(Option.builder(s).longOpt(l)).build)
+      def add(s: String,l: String,f: Builder ⇒ Builder = identity): Options =
+        o.addOption(f(builder(s).longOpt(l)).build)
     }
 
     new DefaultParser().parse(new Options()
-      .add("l","load"   ,_.hasArg)                       // ...requires path
-      .add("r","read"   ,_.hasArg)                       // ...requires path
-      .add("d","dump"   ,_.hasArg)                       // ...requires path
-      .add("s","save"   ,_.hasArg)                       // ...requires path
-      .add("q","query"  ,_.hasArg.optionalArg(true))     // ...optional query
-      .add("a","all-fields"   )                          // ...simple switch
-      .add("h","help"   )                                // ...simple switch
+      .add("l","load" ,_.hasArg)                         // ...requires path
+      .add("r","read" ,_.hasArg)                         // ...requires path
+      .add("d","dump" ,_.hasArg)                         // ...requires path
+      .add("s","save" ,_.hasArg)                         // ...requires path
+      .add("q","query",_.hasArg.optionalArg(true))       // ...optional query
+      .add("a","all-fields")                             // ...simple switch
+      .add("h","help")                                   // ...simple switch
       .add("v","version")                                // ...simple switch
-      ,args)
+      ,args)                                             // Parse arguments
   }
 }
 

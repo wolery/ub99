@@ -109,6 +109,11 @@ case class Effect (kind: Kind,name: Name,fields: Seq[Field])
     new Effect(kind,name,fields.map(_.copy))
   }
 
+  def isDefault: Boolean =
+  {
+    equals(Effect.default)
+  }
+
   override
   def toString: String = name
 }

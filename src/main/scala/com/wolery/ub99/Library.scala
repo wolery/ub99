@@ -15,28 +15,39 @@
 package com.wolery.ub99
 
 import java.io._
-
+import scala.collection.mutable.Map
 import Utilities._
 
-//****************************************************************************
-
-object Library extends Errors with Logging
+/**
+ * @author Jonathon Bell
+ */
+object Library extends Logging
 {
-  def format(message: String): String = message
+  val library_size = 99                            // Patches per library
+  val image_magic  = "UB99 V1.00"                  // File format magic string
+  val image_size   = 0x4400                        // Bytes per library file
+  val effect_size  = 0x009F                        // Bytes per patch block
+  val header_size  = 0x0600                        // Bytes per file header
+  val name_table   = 0x0080                        // Bytes per name table
 
-  def load(path: String): Unit =
+  val m_effect     = Array.fill(library_size)(Effect())
+
+  lazy val image_prefix =
+  {
+    s"UB99 V1.00${"\u0000" * 54}UB99 V1.00${"\u0000" * 54}".getBytes
+  }
+
+  /**
+   * @param io
+   */
+  def load(io: InputStream): Unit =
   {
     val b = new Bytes(image_size)
-    val n = open(path,new FileInputStream(_),badLoadPath).read(b)
+    val n = io.read(b)
 
-    if (n != b.length)
+    if (n!=b.length || !b.startsWith(image_prefix))
     {
-      badLoadFormat(path)
-    }
-
-    if (substring(b,0,10).compareTo(image_magic) != 0)
-    {
-      badLoadFormat(path)
+      throw new IOException("the file is not a patch library")
     }
 
     var i = 0
@@ -44,76 +55,75 @@ object Library extends Errors with Logging
 
     while (i != library_size)
     {
-      m_slot(i) = Effect(b.slice(o,o + effect_size))
-      o        += effect_size
-      i        += 1
+      m_effect(i) = Effect(b.slice(o,o + effect_size))
+      o          += effect_size
+      i          += 1
     }
   }
 
-  def save(path: String): Unit =
+  /**
+   * @param io
+   */
+  def save(io: OutputStream): Unit =
   {
     val b = new Bytes(image_size)
 
-    image_magic.getBytes.copyToArray(b,0x0000)
-    image_magic.getBytes.copyToArray(b,0x0040)
+    image_prefix.copyToArray(b,0)
 
     for (i ← 0 until library_size)
     {
       val e = new Bytes(effect_size)
 
-      m_slot(i).save(e)
+      m_effect(i).save(e)
 
       e.slice(16,16+name_size).copyToArray(b,name_table + i * name_size)
       e.copyToArray(b,header_size + i * effect_size)
     }
 
-    val n = open(path,new FileOutputStream(_),badSavePath).write(b)
+    val n = io.write(b)
   }
 
-  def read(path: String): Unit =
+  /**
+   * @param io
+   */
+  def read(io: Reader): Unit =
   {
-    Parser.parse(open(path,new FileReader(_),badReadPath),m_slot)
+    Parser.parse(io,m_effect)
   }
 
-  def dump(path: String): Unit =
+  /**
+   * @param io
+   */
+  def dump(io: Writer): Unit  =
   {
-    val w = open(path,new FileWriter(_),badDumpPath)
+    val m = Map[String,Slot]()
+    val b = s"//${"*" * 76}\n"
 
-    val map = scala.collection.mutable.Map[String,Slot]()
+    io.append(b).append('\n')
 
-    w.append(line_break).append('\n')
-
-    for (s ← 0 until library_size if all_fields || !m_slot(s).equals(Effect.default))
+    for (s ← 0 until library_size if all_fields || !m_effect(s).isDefault)
     {
-      val e = m_slot(s)
+      val e = m_effect(s)
       val n = e.patchName
-      val t = map.getOrElseUpdate(n,s)
+      val t = m.getOrElseUpdate(n,s)
 
-      w.append(f"${s+1}%2d: ")
+      io.append(f"${s+1}%2d: ")
 
-      if (s!=t && m_slot(s).kind==m_slot(t).kind)
+      if (s!=t && m_effect(s).kind==m_effect(t).kind)
       {
-        m_slot(t).dump(w,t,m_slot(s))
-        w.append(" // " + n)
+        m_effect(t).dump(io,t,m_effect(s))
+        io.append(" // " + n)
       }
       else
       {
-        m_slot(s).dump(w)
+        m_effect(s).dump(io)
       }
 
-      w.append('\n')
+      io.append('\n')
     }
 
-    w.append('\n').append(line_break)
-    w.flush()
+    io.append('\n').append(b).flush()
   }
-
-  def open[α](path: String,as: String ⇒ α,fail: String ⇒ Nothing): α =
-  {
-    try as(path) catch {case _: Exception ⇒ fail(path)}
-  }
-
-  val m_slot: Array[Effect] = Array.fill(library_size)(Effect())
 }
 
 //****************************************************************************

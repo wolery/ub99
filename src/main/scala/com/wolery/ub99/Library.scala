@@ -24,18 +24,13 @@ import Utilities._
 object Library extends Logging
 {
   val library_size = 99                            // Patches per library
-  val image_magic  = "UB99 V1.00"                  // File format magic string
   val image_size   = 0x4400                        // Bytes per library file
-  val effect_size  = 0x009F                        // Bytes per patch block
   val header_size  = 0x0600                        // Bytes per file header
-  val name_table   = 0x0080                        // Bytes per name table
+  val name_table   = 0x0080                        // Offset of name table
+  val effect_size  = 0x009F                        // Bytes per effect block
+  val image_prefix = (s"UB99 V1.00${"\u0000" * 54}" * 2).getBytes
 
-  val m_effect     = Array.fill(library_size)(Effect())
-
-  lazy val image_prefix =
-  {
-    s"UB99 V1.00${"\u0000" * 54}UB99 V1.00${"\u0000" * 54}".getBytes
-  }
+  val m_eff        = Array.fill(library_size)(Effect())
 
   /**
    * @param io
@@ -44,20 +39,17 @@ object Library extends Logging
   {
     val b = new Bytes(image_size)
     val n = io.read(b)
+    var o = header_size
 
-    if (n!=b.length || !b.startsWith(image_prefix))
+    if (n!=b.size || !b.startsWith(image_prefix))
     {
       throw new IOException("the file is not a patch library")
     }
 
-    var i = 0
-    var o = header_size
-
-    while (i != library_size)
+    for (i ← 0 until library_size)
     {
-      m_effect(i) = Effect(b.slice(o,o + effect_size))
-      o          += effect_size
-      i          += 1
+      m_eff(i) = Effect(b.slice(o,o + effect_size))
+      o       += effect_size
     }
   }
 
@@ -67,20 +59,25 @@ object Library extends Logging
   def save(io: OutputStream): Unit =
   {
     val b = new Bytes(image_size)
+    var o = header_size
+    var n = name_table
 
     image_prefix.copyToArray(b,0)
 
     for (i ← 0 until library_size)
     {
       val e = new Bytes(effect_size)
+      m_eff(i).save(e)
+      val s = e.slice(16,16 + name_size)
 
-      m_effect(i).save(e)
+      e.copyToArray(b,o)
+      s.copyToArray(b,n)
 
-      e.slice(16,16+name_size).copyToArray(b,name_table + i * name_size)
-      e.copyToArray(b,header_size + i * effect_size)
+      o += effect_size
+      n += name_size
     }
 
-    val n = io.write(b)
+    io.write(b)
   }
 
   /**
@@ -88,7 +85,7 @@ object Library extends Logging
    */
   def read(io: Reader): Unit =
   {
-    Parser.parse(io,m_effect)
+    Parser.parse(io,m_eff)
   }
 
   /**
@@ -101,22 +98,22 @@ object Library extends Logging
 
     io.append(b).append('\n')
 
-    for (s ← 0 until library_size if all_fields || !m_effect(s).isDefault)
+    for (s ← 0 until library_size if all_fields || !m_eff(s).isDefault)
     {
-      val e = m_effect(s)
+      val e = m_eff(s)
       val n = e.patchName
       val t = m.getOrElseUpdate(n,s)
 
       io.append(f"${s+1}%2d: ")
 
-      if (s!=t && m_effect(s).kind==m_effect(t).kind)
+      if (s!=t && m_eff(s).kind==m_eff(t).kind)
       {
-        m_effect(t).dump(io,t,m_effect(s))
+        m_eff(t).dump(io,t,m_eff(s))
         io.append(" // " + n)
       }
       else
       {
-        m_effect(s).dump(io)
+        m_eff(s).dump(io)
       }
 
       io.append('\n')

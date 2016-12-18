@@ -44,10 +44,8 @@ case class Effect (kind: Kind,name: Name,fields: Seq[Field])
   def save(bytes: Bytes) =
   {
     bytes(1) = kind
-    for (f ← fields)
-    {
-      f.save(bytes)
-    }
+
+    fields.foreach(_.save(bytes))
   }
 
   def dump(io: Writer) =

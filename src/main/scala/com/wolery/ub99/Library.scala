@@ -85,7 +85,7 @@ object Library extends Logging
    */
   def read(io: Reader): Unit =
   {
-    Parser.parse(io,m_eff)
+    Parser.parse(new org.anarres.cpp.CppReader(io),m_eff)
   }
 
   /**

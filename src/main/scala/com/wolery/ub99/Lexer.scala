@@ -18,7 +18,7 @@ import java.io.{PushbackReader,Reader}
 
 //****************************************************************************
 
-final class Lexer (reader: Reader) extends Errors with Logging
+final class Lexer (reader: Reader) extends Logging
 {
   def apply(): Token =
   {
@@ -32,7 +32,7 @@ final class Lexer (reader: Reader) extends Errors with Logging
     {
       case '='                      ⇒ push(s,'=');onToken(s)
       case c if c.isDigit           ⇒ push(s)    ;onDigit(c)
-      case c                        ⇒ badLexeme(s"$s$c")
+      case c                        ⇒ onError(c).badLexeme(s"$s$c")
     }
 
     def onSlash() =
@@ -45,7 +45,7 @@ final class Lexer (reader: Reader) extends Errors with Logging
 
       def eob(): Unit               = read() match
       {
-        case '∅'                    ⇒ badComment()
+        case '∅'                    ⇒ onError('∅').badComment()
         case '*'                    ⇒ eoc()
         case  _                     ⇒ eob()
       }
@@ -60,7 +60,7 @@ final class Lexer (reader: Reader) extends Errors with Logging
       {
         case '/'                    ⇒ eol();apply()
         case '*'                    ⇒ eob();apply()
-        case  c                     ⇒ badLexeme(s"/$c")
+        case  c                     ⇒ onError(c).badLexeme(s"/$c")
       }
     }
 
@@ -68,7 +68,7 @@ final class Lexer (reader: Reader) extends Errors with Logging
     {
       def eos(): Unit               = read() match
       {
-        case '\n' | '∅'             ⇒ badString()
+        case '\n' | '∅'             ⇒ onError('∅').badString()
         case '"'                    ⇒ space()
         case c                      ⇒ push(c);eos()
       }
@@ -151,6 +151,11 @@ final class Lexer (reader: Reader) extends Errors with Logging
       Token(token,s,m_line,m_file)
     }
 
+    def onError(c: Char): Token =
+    {
+      Token('?',c.toString,m_line,m_file)
+    }
+
 //****************************************************************************
 
     def read(): Char            = m_read.read().toChar match
@@ -174,7 +179,7 @@ final class Lexer (reader: Reader) extends Errors with Logging
     {
       if (m_buff.length + characters.size > longest_lexeme)
       {
-        badLength()
+        onError('?').badLength()
       }
 
       characters.foreach{m_buff.append(_)}
@@ -194,8 +199,8 @@ final class Lexer (reader: Reader) extends Errors with Logging
       case c if c.isDigit       ⇒ onDigit(c)
       case c if c.isLetter      ⇒ onAlpha(c)
       case c if c.isWhitespace  ⇒ onWhite( )
-      case c if 32>=c && c<=127 ⇒ badChar(c)
-      case c                    ⇒ badByte(c)
+      case c if 32>=c && c<=127 ⇒ onError(c).badChar(c)
+      case c                    ⇒ onError(c).badByte(c)
     }
   }
 
@@ -204,11 +209,6 @@ final class Lexer (reader: Reader) extends Errors with Logging
     require(line>0 && file!=null)
     m_line = line
     m_file = file
-  }
-
-  def format(message: String): String =
-  {
-    s"$m_file($m_line) : " + message.replaceAll("LEXEME",m_buff.toString)
   }
 
   var m_line: ℕ                 = 1

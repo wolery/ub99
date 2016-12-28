@@ -5,12 +5,12 @@
 #**  Version : $Header:$
 #**
 #**
-#**  Purpose : Generic JAR launcher script.
+#**  Purpose : Implements a generic launcher script for executable JAR files.
 #**
 #**
-#**  Usage   : 1. Create executable JAR file  e.g. foo.jar
-#**            2. Append it to this script    e.g. cat launch.sh foo.jar > foo
-#**            3. Mark file executable        e.g. chmod +x foo
+#**  Usage   : 1. Create an executable JAR  e.g. foo.jar
+#**            2. Append it to this script  e.g. cat launch.sh foo.jar > foo
+#**            3. Mark the file executable  e.g. chmod +x foo
 #**
 #**  See Also: https://coderwall.com/p/ssuaxa/how-to-make-a-jar-file-linux-executable
 #**
@@ -30,7 +30,9 @@ error()
   echo "  than one version installed you can specify which to use by setting"
   echo "  the JAVA_HOME environment variable."
   echo
-  echo "  You can download the latest version from '  '."
+  echo "  You can download the latest version of the JVM from:"
+  echo "  http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html"
+  echo
   exit 1
 }
 

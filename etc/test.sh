@@ -17,37 +17,57 @@ dir="$(dirname $0)/../src/test/resources"
 
 #*****************************************************************************
 #**
-#** 1:  test label
-#** 2:  source file
-#** 3:  command
-#**
+#** 1:  artifact 
 
-test-case()
+compare ()
 {
-  test=$(basename $1)
-  echo "$test..."
-
-  ./ub99 $2
-
-  if cmp -s $1 $1.tmp
-  then 
-    rm $1.tmp
+  if cmp -s $1 $2 ; then
+   rm $2
   else
     echo "$test failed:"
-    echo "  files $test and $test.tmp differ"
+    echo "  files $(basename $1) and $(basename $2) differ"
   fi
 }
 
 #*****************************************************************************
+#**
+#** 1:  test label = subdirectoy
 
-test-clean()                            { rm -f $dir/*.tmp                  ;}
-test-load-save()                        { test-case $1 "-l $1 -s $1.tmp"    ;}
-test-read-dump()                        { test-case $1 "-r $1 -d $1.tmp $2" ;}
+test-case()
+{
+  test=$(basename $1)
+
+  load=$1$test.l.ub9
+  save=$1$test.s.ub9 && [ ! -e $save ] && save=$load
+  read=$1$test.r.txt
+  dump=$1$test.d.txt
+  Dump=$1$test.a.txt
+
+  echo "$test..."
+ 
+  c="./ub99"
+
+  [ -f $load ] && c="$c -l $load"
+  [ -f $read ] && c="$c -r $read"
+  [ -f $save ] && c="$c -s $save.ub9"
+
+  cd="$c -d $dump.txt"
+  ca="$c -d $Dump.txt -a"
+
+  if [ -f $dump ] ; then
+     $cd && [ -f $Dump ] && $ca
+  else
+     [   -f $Dump ] && $ca
+     [ ! -f $Dump ] && $c
+  fi
+
+  [ -f $save ] && compare $save $save.ub9
+  [ -f $dump ] && compare $dump $dump.txt
+  [ -f $Dump ] && compare $Dump $Dump.txt
+}
 
 #*****************************************************************************
 
- for i in $dir/load-save-*.ub9;     do test-load-save $i;    done
- for i in $dir/read-dump-min-*.txt; do test-read-dump $i;    done
- for i in $dir/read-dump-all-*.txt; do test-read-dump $i -a; done
+for d in $dir/*/ ; do test-case $d ; done
 
 #*****************************************************************************

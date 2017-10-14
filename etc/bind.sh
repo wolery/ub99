@@ -8,11 +8,11 @@
 #**  Purpose : Binds the executable JAR to its launcher script. 
 #**
 #**
-#**  Comments: This file uses a tab size of 2 spaces.
+#**  Comments: This file uses a tab size of 3 spaces.
 #**
 #**
 #*****************************************************************************
 
-cat etc/launch.sh target/ub99-?.?.?.jar > ub99 && chmod +x ub99
+cat etc/launch.sh target/ub99-*.jar > ub99 && chmod +x ub99
 
 #*****************************************************************************

@@ -36,7 +36,7 @@ class LexerTest extends FunSuite with TableDrivenPropertyChecks
     new Lexer(new StringReader(string))
   }
 
-  test("positive")
+  ignore("positive")
   {
     val good = Table(
 
@@ -87,7 +87,7 @@ class LexerTest extends FunSuite with TableDrivenPropertyChecks
     }
   }
 
-  test("negative")
+  ignore("negative")
   {
     def fail(lexeme: String): String =
     {
@@ -119,7 +119,7 @@ class LexerTest extends FunSuite with TableDrivenPropertyChecks
     }
   }
 
-  test("lex read.txt")
+  ignore("lex read.txt")
   {
     val lex = new Lexer(new FileReader("src/test/resources/txt/_read.txt"))
     var t   = lex()

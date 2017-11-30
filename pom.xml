@@ -29,6 +29,10 @@
     <developerConnection>scm:git:git@github.com:wolery/ub99.git</developerConnection>
   </scm>
 
+  <properties>
+    <project.build.mainClass>com.wolery.ub99.Main</project.build.mainClass>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>commons-cli</groupId>
@@ -64,17 +68,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <executions>
-          <execution>
-            <configuration>
-              <transformers>
-                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                  <mainClass>com.wolery.ub99.Main</mainClass>
-                </transformer>
-              </transformers>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
 
       <plugin>

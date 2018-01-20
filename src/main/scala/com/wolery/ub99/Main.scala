@@ -12,7 +12,8 @@
 //*                                                                   (| v |)
 //**********************************************************************w*w***
 
-package com.wolery.ub99
+package com.wolery
+package ub99
 
 import java.io._
 import scala.sys.exit

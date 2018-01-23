@@ -12,7 +12,8 @@
 //*                                                                   (| v |)
 //**********************************************************************w*w***
 
-package com.wolery.ub99
+package com.wolery
+package ub99
 
 import Utilities._
 

@@ -12,7 +12,8 @@
 //*                                                                   (| v |)
 //**********************************************************************w*w***
 
-package com.wolery.ub99
+package com.wolery
+package ub99
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory

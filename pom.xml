@@ -8,12 +8,13 @@
 
   <parent>
     <groupId>com.wolery</groupId>
-    <artifactId>pom</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
-    <relativePath>../pom/pom.xml</relativePath>
+    <artifactId>wolery</artifactId>
+    <version>1</version>
+    <relativePath>../wolery/pom.xml</relativePath>
   </parent>
 
   <artifactId>ub99</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>UB99</name>

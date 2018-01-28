@@ -56,18 +56,21 @@
       <artifactId>jcpp</artifactId>
     </dependency>
     <dependency>
+      <groupId>com.wolery</groupId>
+      <artifactId>nest</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.scalatest</groupId>
-      <artifactId>scalatest_2.12</artifactId>
+      <artifactId>scalatest_${scala.binary.version}</artifactId>
     </dependency>
     <dependency>
       <groupId>org.scalactic</groupId>
-      <artifactId>scalactic_2.12</artifactId>
+      <artifactId>scalactic_${scala.binary.version}</artifactId>
     </dependency>
   </dependencies>
 
   <build>
     <plugins>
-
       <plugin>
         <groupId>net.alchim31.maven</groupId>
         <artifactId>scala-maven-plugin</artifactId>
@@ -90,7 +93,6 @@
           <executable>etc/bind.sh</executable>
         </configuration>
       </plugin>
-
     </plugins>
   </build>
 </project>

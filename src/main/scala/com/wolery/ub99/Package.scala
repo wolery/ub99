@@ -18,9 +18,6 @@ package com.wolery
 
 package object ub99
 {
-  type ℕ                = Int
-  type ℤ                = Int
-  type ℝ                = Double
   type Name             = String
   type Slot             = Int
   type Code             = Int
@@ -28,9 +25,9 @@ package object ub99
   type Point            = (ℕ,ℝ)
   type Writer           = java.io.Writer
   type Bytes            = Array[Byte]
+  type Logging          = util.Logging
 
   val none: Code        = 0x6B        // ...the value of an unassigned knob
-
   val name_size         = 12          // ...number of bytes per patch name
   val longest_lexeme    = 32          // ...maximum characters in a lexeme
 

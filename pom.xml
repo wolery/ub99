@@ -31,7 +31,7 @@
   <packaging>jar</packaging>
 
   <name>UB99</name>
-  <description>Yamaha MagicStomp UB99 Patch Library editor utility.</description>
+  <description>Yamaha MagicStomp Patch Editing Utility</description>
   <url>https://github.com/wolery/ub99</url>
   <inceptionYear>March 2016</inceptionYear>
 

@@ -20,6 +20,7 @@ import scala.sys.exit
 import org.apache.commons.cli._
 import org.apache.commons.cli.Option._
 
+import com.wolery.util.manifest.println
 import Library._
 
 /**
@@ -117,7 +118,7 @@ object Main
   {
     println("Usage: ub99 [options]")
     println("Creates and parses MagicStomp UB99 patch library files.")
-    println("See https://github.com/wolery/ub99 for more details.")
+    println("See ${Implementation-Version} for more details.")
     println("")
     println("Options:")
     println(" -l,--load <path>              patch library to load")
@@ -135,9 +136,10 @@ object Main
    */
   def doVersion() =
   {
-    println("MagicStomp Patch Editing Utility v1.0.0.")
+    println("${Description} v${Implementation-Version} [${Profile-Id}]")
+    println("Built on ${Built}.")
     println("Copyright © Jonathon Bell. All rights reserved.")
-    println("See https://github.com/wolery/ub99 for more details.")
+    println("See ${Implementation-URL} for more details.")
   }
 
   /**

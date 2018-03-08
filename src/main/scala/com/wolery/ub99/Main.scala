@@ -118,7 +118,7 @@ object Main
   {
     println("Usage: ub99 [options]")
     println("Creates and parses MagicStomp UB99 patch library files.")
-    println("See ${Implementation-Version} for more details.")
+    println("See ${Implementation-URL} for more details.")
     println("")
     println("Options:")
     println(" -l,--load <path>              patch library to load")

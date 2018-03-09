@@ -8,6 +8,9 @@
 #**  Purpose : Binds the executable JAR to its launcher script. 
 #**
 #**
+#**  See Also: https://coderwall.com/p/ssuaxa/how-to-make-a-jar-file-linux-executable
+#**
+#**
 #**  Comments: This file uses a tab size of 3 spaces.
 #**                                                                     0-0
 #**                                                                   (| v |)

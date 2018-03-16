@@ -42,7 +42,7 @@
   </scm>
 
   <properties>
-    <project.build.mainClass>com.wolery.ub99.Main</project.build.mainClass>
+    <project.build.mainClass>com.wolery.ub99.ub99</project.build.mainClass>
   </properties>
 
   <dependencies>

@@ -26,7 +26,7 @@ import Library._
 /**
  * @author Jonathon Bell
  */
-object Main
+object ub99
 {
   /**
    * Parse the command line, test for options, and generally run the show.

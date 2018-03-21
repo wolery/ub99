@@ -11,7 +11,7 @@
 #**  See Also: https://coderwall.com/p/ssuaxa/how-to-make-a-jar-file-linux-executable
 #**
 #**
-#**  Comments: This file uses a tab size of 3 spaces.
+#**  Comments: This file uses a tab size of 2 spaces.
 #**                                                                     0-0
 #**                                                                   (| v |)
 #***********************************************************************w*w***

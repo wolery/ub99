@@ -20,7 +20,7 @@
 #**                                                                   (| v |)
 #***********************************************************************w*w***
 
-# formats the given argument string as an error message and exits the script.
+# Formats the given argument string as an error message and exits the script.
 
 error()
 {
@@ -38,7 +38,7 @@ error()
   exit 1
 }
 
-# returns the path to the java executable.
+# Returns the path to the currently selected java executable.
 
 jvm()
 {
@@ -59,14 +59,7 @@ jvm()
   echo $JVM
 }
 
-# formats the major and minor digits of the version number as an integer.
-
-version()
-{
-  `jvm` -version 2>&1 | sed -n ';s/.* version "\(.*\)\.\(.*\)\..*"/\1\2/p;'
-}
-
-# returns the path to the self executing jar  that is appended to this script.
+# Returns the path to the self executing jar that is appended to this script.
 
 jar()
 {
@@ -79,11 +72,16 @@ jar()
   echo $JAR
 }
 
-# verify that we are running on a sufficiently recent JVM.  
+# Verify that we are running on a sufficiently recent JVM.
+#
+# Here 'sufficiently recent' means Java 8 or later. Notice that Oracle changed 
+# the format of the version string with the release of Java 9. See https://blogs.oracle.com/java-platform-group/a-new-jdk-9-version-string-scheme
+# for further details.
 
-if (( `version` < 18 )); then
-  error "Can't use the Java executable at JAVA_HOME=${JAVA_HOME}/bin"
-fi
+case $(`jvm` -version 2>&1 | head -n 1 | cut -d'"' -f2) in
+  1.8) ;;
+  1.*) error "Can't use the Java executable at JAVA_HOME=${JAVA_HOME}/bin";;
+esac
 
 #*****************************************************************************
 

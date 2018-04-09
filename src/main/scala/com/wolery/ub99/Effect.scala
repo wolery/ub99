@@ -15,13 +15,11 @@
 package com.wolery
 package ub99
 
-import java.io.OutputStream
-
 import scala.collection.immutable.TreeMap
 
 import Fields.newKnob
 import Fields.newName
-import Utilities.{tabulate,replace}
+import Utilities.tabulate
 
 //****************************************************************************
 

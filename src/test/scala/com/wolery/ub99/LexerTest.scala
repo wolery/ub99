@@ -18,8 +18,6 @@ package ub99
 import java.io.FileReader
 import java.io.StringReader
 
-import org.scalatest.BeforeAndAfter
-import org.scalatest.Finders
 import org.scalatest.FunSuite
 import org.scalatest.prop.TableDrivenPropertyChecks
 

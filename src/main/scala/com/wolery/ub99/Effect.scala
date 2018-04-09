@@ -31,7 +31,7 @@ case class Effect (kind: Kind,name: Name,fields: Seq[Field])
   def apply(name: Name): Field   = m_name(name.toUpperCase)
   def apply(code: Code): Field   = m_code(code)
   def names            : Seq[Name] = fields.map(f ⇒ f.name)
-  def help             : Unit    = tabulate(names)
+  def help()           : Unit    = tabulate(names)
 
   def patchName: Name =
   {

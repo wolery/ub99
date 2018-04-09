@@ -1971,7 +1971,7 @@ object Effects
 
   val byname: Map[Name,Effect] = bykind.map(e ⇒ e.name.toUpperCase → e).toMap
 
-  def help: Unit = Utilities.tabulate(bykind.map(e ⇒ e.name))
+  def help(): Unit = Utilities.tabulate(bykind.map(e ⇒ e.name))
 }
 
 //****************************************************************************

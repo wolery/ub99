@@ -61,15 +61,7 @@ case class Token (token: Char,lexeme: String,line: ℕ,file: String = "")
       case _     ⇒ wanted
     }
 
-    fail(s"syntax error: wanted ${describe(wanted)} but got $lexeme")
-  }
-
-  def describe(tokens: String): String = tokens match
-  {
-    case "S"   ⇒ "a name"
-    case "ℤℝ"  ⇒ "a number"
-    case "Sℤℝ" ⇒ "a name or number"
-    case _     ⇒ tokens
+    fail(s"syntax error: wanted $w but got $lexeme")
   }
 }
 

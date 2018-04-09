@@ -171,7 +171,7 @@ object Parser extends Logging
         m_tok.badExplicitSlot()
       }
 
-      val e: Effect = effects(s).copy
+    //val e: Effect = effects(s).copy
 
       log.debug(s"${slot.lexeme}(")
     }

@@ -15,6 +15,8 @@
 package com.wolery
 package ub99
 
+//****************************************************************************
+
 /**
  * Miscellaneous utility functions.
  *

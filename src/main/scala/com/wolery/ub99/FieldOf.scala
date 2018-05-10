@@ -15,7 +15,11 @@
 package com.wolery
 package ub99
 
+//****************************************************************************
+
 import Utilities.inside
+
+//****************************************************************************
 
 /**
  * Partially implements the abstract Field interface.

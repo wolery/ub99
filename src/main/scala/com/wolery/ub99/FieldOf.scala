@@ -25,8 +25,9 @@ import Utilities.inside
  * Partially implements the abstract Field interface.
  *
  * @tparam Value    -
- * @param  name      -
- * @param  code      -
+ *
+ * @param  name     -
+ * @param  code     -
  * @param  default  -
  *
  * @author Jonathon Bell

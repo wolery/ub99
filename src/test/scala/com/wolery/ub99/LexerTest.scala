@@ -20,12 +20,12 @@ package ub99
 import java.io.FileReader
 import java.io.StringReader
 
-import org.scalatest.FunSuite
+import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.prop.TableDrivenPropertyChecks
 
 //****************************************************************************
 
-class LexerTest extends FunSuite with TableDrivenPropertyChecks
+class LexerTest extends AnyFunSuite with TableDrivenPropertyChecks
 {
   def lex(lexeme: String): Token =
   {

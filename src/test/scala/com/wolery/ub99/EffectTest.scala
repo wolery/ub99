@@ -15,11 +15,11 @@
 package com.wolery
 package ub99
 
-import org.scalatest.FunSuite
+import org.scalatest.funsuite.AnyFunSuite
 
 //****************************************************************************
 
-class EffectTest extends FunSuite
+class EffectTest extends AnyFunSuite
 {
   test("blaa")
   {

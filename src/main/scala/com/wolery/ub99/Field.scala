@@ -27,7 +27,7 @@ trait Field extends Cloneable
   def name                           : Name
   def code                           : Code
 
-  def help()                         : Unit
+  def help                           : Unit
   def copy                           : Field
 
   def dirty                          : Boolean
